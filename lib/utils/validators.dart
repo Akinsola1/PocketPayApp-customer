@@ -1,4 +1,3 @@
-
 /// Class of validation functions that the app will use
 ///   - This class should be used as a mixin using the `with` keyword
 class Validators {
@@ -9,6 +8,7 @@ class Validators {
   final zipCodeRegExp = RegExp(r'^[0-9]{5}(?:-[0-9]{4})?$');
 
   String password = "";
+  String pin = "";
 
   String? validateEmail(String value) {
     if (!emailRegExp.hasMatch(value.trim())) {
@@ -20,9 +20,8 @@ class Validators {
     return null;
   }
 
-
   String? validateAmount(String value) {
-    if (value.length < 4) {
+    if (value.length < 3) {
       return 'Amount too small';
     }
     if (value.length > 10) {
@@ -43,7 +42,7 @@ class Validators {
 
   String? validatePhoneNumber(String value) {
     if (!phoneNumberRegExp.hasMatch(value.trim())) {
-      return 'invalid phonenumber';
+      return 'invalid phone number';
     }
     return null;
   }
@@ -52,7 +51,6 @@ class Validators {
     if (value.isEmpty) return "Field cannot be empty";
     if (value.length < 3) return "Invalid input";
 
-
     return null;
   }
 
@@ -60,6 +58,7 @@ class Validators {
     if (value.length < 9) return "Incomplete Account Number";
     return null;
   }
+
   String? validateNIN(String value) {
     if (value.length < 11) return "Invalid NIN";
     if (value.isEmpty) return "Field cannot be empty";
@@ -67,18 +66,25 @@ class Validators {
     return null;
   }
 
+  String? validateRegNum(String value) {
+    if (value.length < 11) return "Invalid registration number";
+    if (value.isEmpty) return "Field cannot be empty";
+
+    return null;
+  }
+
   String? validateZip(String value) {
     if (!zipCodeRegExp.hasMatch(value.trim())) {
-      return 'invalid zip code';
+      return 'Invalid zip code';
     }
     return null;
   }
 
   String? validatePassword(String value) {
     if (value.trim().isEmpty) {
-      return 'password field cannot be empty';
+      return 'Password field cannot be empty';
     } else if (value.length < 8) {
-      return 'password is too short';
+      return 'Password is too short';
     }
     password = value;
     return null;
@@ -86,22 +92,32 @@ class Validators {
 
   String? confirmPassword(String confirmPassword) {
     if (confirmPassword != password) {
-      return 'passwords do not match';
+      return 'Passwords do not match';
     } else if (confirmPassword.isEmpty) {
-      return 'confirm password field cannot be empty';
+      return 'Password field cannot be empty';
     }
     return null;
   }
 
   String? validatePin(String value) {
     if (value.trim().isEmpty) {
-      return 'password field cannot be empty';
-    } else if (value.length != 6) {
-      return 'pin must be 6 numbers';
+      return 'PIN field cannot be empty';
+    } else if (value.length != 4) {
+      return 'PIN must be 4 numbers';
     }
+    pin = value;
+
     return null;
   }
 
+  String? confirmPin(String confirmPin) {
+    if (confirmPin != pin) {
+      return 'PINs do not match';
+    } else if (confirmPin.isEmpty) {
+      return 'PIN field cannot be empty';
+    }
+    return null;
+  }
 
   String toOriginalFormatString(DateTime dateTime) {
     final y = dateTime.year.toString().padLeft(4, '0');

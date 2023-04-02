@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocket_pay_app/constant/colors.dart';
 import 'package:pocket_pay_app/constant/text_Style.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -17,7 +18,7 @@ class CustomButton extends StatefulWidget {
       this.textColor = Colors.white,
       this.buttonColor,
       this.borderColor,
-      this.loading = false})
+      this.loading = false, })
       : super(key: key);
 
   final String label;
@@ -26,6 +27,7 @@ class CustomButton extends StatefulWidget {
   final Color? borderColor;
   final VoidCallback onTap;
   final bool loading;
+  
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -39,8 +41,8 @@ class _CustomButtonState extends State<CustomButton> {
       child: Container(
         height: 58,
         decoration: BoxDecoration(
-          color: widget.buttonColor ?? kPrimaryColor,
-          border: Border.all(color:widget.borderColor ?? kPrimaryColor ),
+          color: widget.buttonColor ?? appPrimaryColor,
+          border: Border.all(color:widget.borderColor ?? appPrimaryColor ),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(

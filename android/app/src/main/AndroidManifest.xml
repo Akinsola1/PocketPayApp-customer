@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pocket_pay_app">
+
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+
    <application
         android:label="pocket_pay_app"
         android:name="${applicationName}"

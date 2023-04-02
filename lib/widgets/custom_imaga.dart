@@ -19,8 +19,7 @@ class CustomNetworkImage extends StatelessWidget {
         width: radius,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border:
-                Border.all(width: 2, color: kPrimaryColor)),
+            border: Border.all(width: 1, color: appPrimaryColor)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(radius - 10),
           child: CachedNetworkImage(
@@ -33,7 +32,9 @@ class CustomNetworkImage extends StatelessWidget {
               decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: AssetImage('assets/face.png'), fit: BoxFit.cover)),
+                      image: NetworkImage(
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8A2wOvDj7sAobit1mD4lCc6ilEaBm_CF3AQ&usqp=CAU'),
+                      fit: BoxFit.cover)),
             ),
           ),
         ));

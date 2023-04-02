@@ -38,7 +38,7 @@ class _SwitchToggleState extends State<SwitchToggle> {
                 valueFontSize: 12,
                 value: widget.serviceToggle,
                 borderRadius: 30.0,
-                activeColor: kPrimaryColor,
+                activeColor: appPrimaryColor,
                 onToggle: widget.function
 
                 // (val) {

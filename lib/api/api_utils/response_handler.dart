@@ -1,7 +1,8 @@
 
 
 import 'package:pocket_pay_app/api/api_utils/network_exception.dart';
-import 'package:pocket_pay_app/api/models/errorModel.dart';
+
+import '../models/customer/errorModel.dart';
 
 dynamic responseHandler(response, {bool hideLog = false}) async {
   //Attempt to derive error message
