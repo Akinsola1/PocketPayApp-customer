@@ -27,20 +27,21 @@ class FlwTransactionModel {
 }
 
 class Datum {
-  Datum({
-    this.id,
-    this.amount,
-    this.dateCreated,
-    this.flwRef,
-    this.paymentMethod,
-    this.status,
-    this.owner,
-  });
+  Datum(
+      {this.id,
+      this.amount,
+      this.dateCreated,
+      this.flwRef,
+      this.paymentMethod,
+      this.status,
+      this.owner,
+      this.txRef});
 
   String? id;
   String? amount;
   DateTime? dateCreated;
   String? flwRef;
+  String? txRef;
   String? paymentMethod;
   String? status;
   int? owner;
@@ -50,6 +51,7 @@ class Datum {
         amount: json["amount"],
         dateCreated: DateTime.parse(json["dateCreated"]),
         flwRef: json["flwRef"],
+        txRef: json["txRef"],
         paymentMethod: json["paymentMethod"],
         status: json["status"],
         owner: json["owner"],

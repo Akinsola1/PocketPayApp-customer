@@ -6,6 +6,7 @@ import 'package:get/get.dart' as getx;
 import 'package:pocket_pay_app/api/api_utils/api_route.dart';
 import 'package:pocket_pay_app/api/models/customer/fetch_qr_code_data_model.dart';
 import 'package:pocket_pay_app/api/models/customer/flw_transaction_model.dart';
+import 'package:pocket_pay_app/api/models/customer/fund_wallet_bank_transfer_model.dart';
 import 'package:pocket_pay_app/api/models/customer/generateQrCodeResponsemodel.dart';
 import 'package:pocket_pay_app/api/models/customer/qr_code_transaction_model.dart';
 import 'package:pocket_pay_app/api/models/customer/user_profile_model.dart';
@@ -42,6 +43,8 @@ class UserProvider extends BaseNotifier with Validators {
   GenerateQrcodeResponse generateQrcodeResponse = GenerateQrcodeResponse();
   FetchQrcodeDataModel fetchQrcodeDataModel = FetchQrcodeDataModel();
   FlwTransactionModel flwTransactionModel = FlwTransactionModel();
+  FundWalletBankTransferModel fundWalletBankTransferModel =
+      FundWalletBankTransferModel();
 
   checkBiometric() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -120,7 +123,7 @@ class UserProvider extends BaseNotifier with Validators {
         "phone": phone,
         "password": password,
       };
-    FormData formData;
+      FormData formData;
       MultipartFile userPicture;
       String id = DateTime.now().millisecondsSinceEpoch.toString();
       Map<String, dynamic> noMediaReq = {}..addAll(val);
@@ -132,8 +135,7 @@ class UserProvider extends BaseNotifier with Validators {
         );
         formData =
             FormData.fromMap(val..addAll({"profilePicture": userPicture}));
-        var responsebody = await API().post(
-            apiRoute.signUp, header, noMediaReq,
+        var responsebody = await API().post(apiRoute.signUp, header, noMediaReq,
             multimediaRequest: formData);
 
         var response = jsonDecode(responsebody);
@@ -336,8 +338,10 @@ class UserProvider extends BaseNotifier with Validators {
       Map val = {
         "amount": amount,
       };
-      var responsebody = await API().post(
-          apiRoute.tempFundingMethod, await headerWithToken(), jsonEncode(val));
+      var responsebody = await API().post(apiRoute.fundWalletBankTransfer,
+          await headerWithToken(), jsonEncode(val));
+      fundWalletBankTransferModel =
+          fundWalletBankTransferModelFromJson(responsebody);
       log("fund wallet || $responsebody");
       setState(ViewState.Idle);
       return true;

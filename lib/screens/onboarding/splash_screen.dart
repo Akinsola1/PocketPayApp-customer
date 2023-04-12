@@ -6,7 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:pocket_pay_app/constant/export_constant.dart';
 import 'package:pocket_pay_app/screens/authentication/customer/login_screen.dart';
+import 'package:pocket_pay_app/screens/authentication/merchant/merchant_decision_screen.dart';
 import 'package:pocket_pay_app/screens/authentication/merchant/merchant_login_screen.dart';
+import 'package:pocket_pay_app/screens/authentication/merchant/staff_login_screen.dart';
 import 'package:pocket_pay_app/screens/onboarding/signup_decision_screen.dart';
 import 'package:pocket_pay_app/services/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 2), () async {
       String appUse = await localStorage.getString("appUse");
+      print(appUse);
       if (appUse.isEmpty) {
         Get.offAll(SignUpDecisionFlow());
       }
@@ -39,7 +42,10 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.offAll(LoginScreen());
       }
       if (appUse == "merchant") {
-        Get.offAll(MerchantLoginScreen());
+        Get.offAll(MerchantDecisionScreen());
+      }
+      if (appUse == "staff") {
+        Get.offAll(StaffLoginScreen());
       }
     });
   }

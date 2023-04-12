@@ -11,7 +11,7 @@ import 'package:pocket_pay_app/constant/export_constant.dart';
 import 'package:pocket_pay_app/constant/size.dart';
 import 'package:pocket_pay_app/screens/customer/generate_to_pay/generate_to_pay.dart';
 import 'package:pocket_pay_app/screens/customer/main/complete_profile_setup_screen.dart';
-import 'package:pocket_pay_app/screens/customer/main/fund_wallet_screen.dart';
+import 'package:pocket_pay_app/screens/customer/fund/fund_wallet_screen.dart';
 import 'package:pocket_pay_app/screens/customer/main/view_qrcode_screen.dart';
 import 'package:pocket_pay_app/screens/customer/scan_to_pay/confirm_transaction_screen.dart';
 import 'package:pocket_pay_app/screens/customer/scan_to_pay/scan_to_pay_screen.dart';
@@ -103,19 +103,19 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         appOptions(
-                          icon: UniconsLine.wallet,
+                          icon: Icons.wallet,
                           title: "Fund",
                           onpressed: () {
                             Get.to(FundWalletScreen());
                           },
                         ),
                         appOptions(
-                          icon: UniconsLine.history,
+                          icon: Icons.history,
                           title: "History",
                           onpressed: () {},
                         ),
                         appOptions(
-                          icon: UniconsLine.qrcode_scan,
+                          icon: Icons.qr_code_scanner,
                           title: "Scan",
                           onpressed: () {
                             Get.to(ScanQrCodeScreen());
@@ -123,11 +123,13 @@ class HomeScreen extends StatelessWidget {
                             // Get.to(ConfirmTransactionScreen());
                           },
                         ),
-                        appOptionsWithImage(
-                          image: "assets/images/qr-code.png",
+                        appOptions(
+                          icon: Icons.qr_code_2,
                           title: "Pay",
                           onpressed: () {
                             Get.to(GenerateToPayScreen());
+
+                            // Get.to(ConfirmTransactionScreen());
                           },
                         ),
                       ],
@@ -162,109 +164,115 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 vertical10,
-                userProv.qrCodeTransaction.data!.isEmpty
-                    ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          vertical30,
-                          LottieBuilder.asset(
-                              "assets/lottie/51382-astronaut-light-theme.json"),
-                          vertical20,
-                          Center(
-                            child: Text(
-                              "You are yet to perform any transaction. Transactions carried out will QR code will displayed here.",
-                              textAlign: TextAlign.center,
-                              style: txStyle12.copyWith(color: Colors.grey),
-                            ),
-                          ),
-                        ],
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: (userProv.qrCodeTransaction.data!.length < 5)
-                            ? userProv.qrCodeTransaction.data!.length
-                            : 5,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  backgroundColor: Colors.white,
-                                  isScrollControlled: true,
-                                  isDismissible: true,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10)),
-                                  ),
-                                  context: context,
-                                  builder: (context) => TransactionDetails(
-                                        transaction: userProv
-                                            .qrCodeTransaction.data!
-                                            .elementAt(index),
-                                      ));
-                            },
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  contentPadding: const EdgeInsets.all(0),
-                                  leading: CustomNetworkImage(
-                                      radius: 50,
-                                      imageUrl: userProv.qrCodeTransaction.data
-                                                  ?.elementAt(index)
-                                                  .status ==
-                                              "Pending"
-                                          ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlHMlGaIm-FgKBskWObPrJh6jkx9vUXEreyw&usqp=CAU"
-                                          : "${userProv.qrCodeTransaction.data?.elementAt(index).merchantBusinessLogo}"),
-                                  title: Text(
-                                    userProv.qrCodeTransaction.data
-                                                ?.elementAt(index)
-                                                .status ==
-                                            "pending"
-                                        ? "Qr code not used"
-                                        : userProv.qrCodeTransaction.data
+                userProv.qrCodeTransaction.data == null
+                    ? Text("Loading")
+                    : userProv.qrCodeTransaction.data!.isEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              vertical30,
+                              LottieBuilder.asset(
+                                  "assets/lottie/51382-astronaut-light-theme.json"),
+                              vertical20,
+                              Center(
+                                child: Text(
+                                  "You are yet to perform a transaction. Transactions carried out with QR code will be displayed here.",
+                                  textAlign: TextAlign.center,
+                                  style: txStyle12.copyWith(color: Colors.grey),
+                                ),
+                              ),
+                            ],
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount:
+                                (userProv.qrCodeTransaction.data!.length < 5)
+                                    ? userProv.qrCodeTransaction.data!.length
+                                    : 5,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      backgroundColor: Colors.white,
+                                      isScrollControlled: true,
+                                      isDismissible: true,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                      ),
+                                      context: context,
+                                      builder: (context) =>
+                                          TransactionDetailsSheet(
+                                            transaction: userProv
+                                                .qrCodeTransaction.data!
+                                                .elementAt(index),
+                                          ));
+                                },
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      contentPadding: const EdgeInsets.all(0),
+                                      leading: CustomNetworkImage(
+                                          radius: 50,
+                                          imageUrl: userProv
+                                                      .qrCodeTransaction.data
+                                                      ?.elementAt(index)
+                                                      .status ==
+                                                  "Pending"
+                                              ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlHMlGaIm-FgKBskWObPrJh6jkx9vUXEreyw&usqp=CAU"
+                                              : "${userProv.qrCodeTransaction.data?.elementAt(index).merchantBusinessLogo}"),
+                                      title: Text(
+                                        userProv.qrCodeTransaction.data
                                                     ?.elementAt(index)
                                                     .status ==
-                                                "expired"
-                                            ? "Qr code expired"
-                                            : "${userProv.qrCodeTransaction.data?.elementAt(index).merchantBusinessName}",
-                                    style: txStyle14Bold,
-                                  ),
-                                  subtitle: Text(
-                                    DateFormat.MMMMd().format(userProv
-                                            .qrCodeTransaction.data
-                                            ?.elementAt(index)
-                                            .dateCreated ??
-                                        DateTime.now()),
-                                    style: txStyle12,
-                                  ),
-                                  trailing: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        convertStringToCurrency(
-                                            "${userProv.qrCodeTransaction.data?.elementAt(index).amount}"),
-                                        style: txStyle14,
+                                                "pending"
+                                            ? "Qr code not used"
+                                            : userProv.qrCodeTransaction.data
+                                                        ?.elementAt(index)
+                                                        .status ==
+                                                    "expired"
+                                                ? "Qr code expired"
+                                                : "${userProv.qrCodeTransaction.data?.elementAt(index).merchantBusinessName}",
+                                        style: txStyle14Bold,
                                       ),
-                                      vertical5,
-                                      Container(
-                                        height: 10,
-                                        width: 10,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Color(transactionStatus(
-                                                "${userProv.qrCodeTransaction.data?.elementAt(index).status}"))),
-                                      )
-                                    ],
-                                  ),
+                                      subtitle: Text(
+                                        DateFormat.MMMMd().format(userProv
+                                                .qrCodeTransaction.data
+                                                ?.elementAt(index)
+                                                .dateCreated ??
+                                            DateTime.now()),
+                                        style: txStyle12,
+                                      ),
+                                      trailing: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            convertStringToCurrency(
+                                                "${userProv.qrCodeTransaction.data?.elementAt(index).amount}"),
+                                            style: txStyle14,
+                                          ),
+                                          vertical5,
+                                          Container(
+                                            height: 10,
+                                            width: 10,
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Color(transactionStatus(
+                                                    "${userProv.qrCodeTransaction.data?.elementAt(index).status}"))),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(),
+                                  ],
                                 ),
-                                Divider(),
-                              ],
-                            ),
-                          );
-                        })
+                              );
+                            })
               ],
             ),
           ),
@@ -274,15 +282,16 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class TransactionDetails extends StatefulWidget {
+class TransactionDetailsSheet extends StatefulWidget {
   final Datum transaction;
-  const TransactionDetails({super.key, required this.transaction});
+  const TransactionDetailsSheet({super.key, required this.transaction});
 
   @override
-  State<TransactionDetails> createState() => _TransactionDetailsState();
+  State<TransactionDetailsSheet> createState() =>
+      _TransactionDetailsSheetState();
 }
 
-class _TransactionDetailsState extends State<TransactionDetails> {
+class _TransactionDetailsSheetState extends State<TransactionDetailsSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -475,10 +484,10 @@ class appOptions extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: SizeConfig.heightOf(2),
             ),
             Text(
               title,
+              overflow: TextOverflow.ellipsis,
               style: txStyle12.copyWith(height: 1.5),
             )
           ],

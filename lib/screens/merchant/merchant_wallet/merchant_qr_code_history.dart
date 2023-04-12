@@ -38,7 +38,7 @@ class _MerchantQrCodeHistoryState extends State<MerchantQrCodeHistory> {
                   Lottie.asset(
                       "assets/lottie/51382-astronaut-light-theme.json"),
                   vertical20,
-                  Text("You are yet to perform any transaction",
+                  Text("You are yet to perform a transaction",
                       style: txStyle14),
                   vertical5,
                   Text("Transactions like withdrawals will be displayed here",
@@ -51,6 +51,8 @@ class _MerchantQrCodeHistoryState extends State<MerchantQrCodeHistory> {
               itemCount: userProv.merchantQrcodeHistory.data!.length,
               // physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
+                var transaction = userProv.merchantQrcodeHistory.data?.reversed
+                    .elementAt(index);
                 return InkWell(
                   onTap: () {
                     showModalBottomSheet(
@@ -64,8 +66,7 @@ class _MerchantQrCodeHistoryState extends State<MerchantQrCodeHistory> {
                         ),
                         context: context,
                         builder: (context) => TransactionDetails(
-                              transaction: userProv.merchantQrcodeHistory.data!
-                                  .elementAt(index),
+                              transaction: transaction!,
                             ));
                   },
                   child: Column(
@@ -74,32 +75,20 @@ class _MerchantQrCodeHistoryState extends State<MerchantQrCodeHistory> {
                         contentPadding: const EdgeInsets.all(0),
                         leading: CustomNetworkImage(
                             radius: 50,
-                            imageUrl: userProv.merchantQrcodeHistory.data
-                                        ?.elementAt(index)
-                                        .status ==
-                                    "Pending"
+                            imageUrl: transaction?.status == "Pending"
                                 ? "https://static-00.iconduck.com/assets.00/pending-icon-512x504-9zrlrc78.png"
-                                : "${userProv.merchantQrcodeHistory.data?.elementAt(index).merchantBusinessLogo}"),
+                                : "${transaction?.merchantBusinessLogo}"),
                         title: Text(
-                          userProv.merchantQrcodeHistory.data
-                                      ?.elementAt(index)
-                                      .status ==
-                                  "Pending"
+                          transaction?.status == "Pending"
                               ? "Qr code not used"
-                              : userProv.merchantQrcodeHistory.data
-                                          ?.elementAt(index)
-                                          .status ==
-                                      "Expired"
+                              : transaction?.status == "Expired"
                                   ? "Qr code expired"
-                                  : "${userProv.merchantQrcodeHistory.data?.elementAt(index).merchantBusinessName}",
+                                  : "${transaction?.merchantBusinessName}",
                           style: txStyle14Bold,
                         ),
                         subtitle: Text(
-                          DateFormat.MMMMd().format(userProv
-                                  .merchantQrcodeHistory.data
-                                  ?.elementAt(index)
-                                  .dateCreated ??
-                              DateTime.now()),
+                          DateFormat.MMMMd().format(
+                              transaction?.dateCreated ?? DateTime.now()),
                           style: txStyle12,
                         ),
                         trailing: Column(
@@ -107,8 +96,7 @@ class _MerchantQrCodeHistoryState extends State<MerchantQrCodeHistory> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              convertStringToCurrency(
-                                  "${userProv.merchantQrcodeHistory.data?.elementAt(index).amount}"),
+                              convertStringToCurrency("${transaction?.amount}"),
                               style: txStyle14,
                             ),
                             vertical5,
@@ -118,7 +106,7 @@ class _MerchantQrCodeHistoryState extends State<MerchantQrCodeHistory> {
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Color(transactionStatus(
-                                      "${userProv.merchantQrcodeHistory.data?.elementAt(index).status}"))),
+                                      "${transaction?.status}"))),
                             )
                           ],
                         ),

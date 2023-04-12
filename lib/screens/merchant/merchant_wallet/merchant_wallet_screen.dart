@@ -128,7 +128,7 @@ class _MerchantWalletState extends State<MerchantWallet> {
                                       text: 'Wallet',
                                     ),
                                     Tab(
-                                      text: 'Qr code',
+                                      text: 'Qr Code',
                                     ),
                                   ],
                                 ),

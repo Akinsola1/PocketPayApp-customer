@@ -3,44 +3,39 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pocket_pay_app/api/repositories/merchant_repository.dart';
 
 import 'package:pocket_pay_app/constant/export_constant.dart';
-import 'package:pocket_pay_app/screens/authentication/customer/signup_screen.dart';
-import 'package:pocket_pay_app/screens/authentication/merchant/merchant_decision_screen.dart';
-import 'package:pocket_pay_app/screens/authentication/merchant/merchant_login_screen.dart';
+import 'package:pocket_pay_app/screens/authentication/customer/login_screen.dart';
+import 'package:pocket_pay_app/screens/authentication/merchant/merchant_signup_screen.dart';
 import 'package:pocket_pay_app/screens/customer/main/bottom_nav_bar.dart';
 import 'package:pocket_pay_app/screens/customer/main/home_screen.dart';
+import 'package:pocket_pay_app/screens/merchant/home/merchant_bottom_nav.dart';
 import 'package:pocket_pay_app/screens/onboarding/signup_decision_screen.dart';
+import 'package:pocket_pay_app/screens/staff/staff_home_screen.dart';
 import 'package:pocket_pay_app/services/local_auth_service.dart';
 import 'package:pocket_pay_app/services/local_storage.dart';
 import 'package:pocket_pay_app/utils/sizeconfig.dart';
 import 'package:pocket_pay_app/widgets/custom_button_load.dart';
 import 'package:pocket_pay_app/widgets/export_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/repositories/user_repository.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class StaffLoginScreen extends StatefulWidget {
+  const StaffLoginScreen({super.key});
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<StaffLoginScreen> createState() => _StaffLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    SizeConfig().init(context);
-  }
-
+class _StaffLoginScreenState extends State<StaffLoginScreen> {
   final _loginkey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _passwordcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // final AuthProv authProv = Get.put(UserProvider());
-    final authProv = Provider.of<UserProvider>(context);
+    final authProv = Provider.of<MerchantProvider>(context);
 
     return Scaffold(
       body: Form(
@@ -52,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 vertical120,
                 Text(
-                  "Hello customer 👋.",
+                  "Hello staff 👋.",
                   style: txStyle27Bold.copyWith(color: appPrimaryColor),
                 ),
                 vertical20,
@@ -91,19 +86,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     userProv: authProv.state,
                     onTap: () async {
                       if (!_loginkey.currentState!.validate()) return;
-                      bool response = await authProv.login(
+                      bool response = await authProv.staffLogin(
                           phone: _phoneController.text.trim(),
                           password: _passwordcontroller.text.trim());
 
                       if (response) {
-                        localStorage.setString("appUse", "customer");
+                        localStorage.setString("appUse", "staff");
 
-                        authProv.fetchCustomerProfile();
-                        authProv.fetchQrCodeTransactions();
-                        authProv.fetchFlwTransactions();
+                        // authProv.fetchMerchantProfile();
+                        // authProv.fetchMerchantBusiness();
+                        // authProv.fetchMerchantQrCodeTransaction();
+                        // authProv.fetchMerchantFlwTransactions();
+                        // authProv.fetchMerchantBank();
+                        // authProv.fetchBanks();
+                        authProv.fetchStaffProfile();
 
                         Future.delayed(Duration(seconds: 1), () {
-                          Get.to(() => BottomNav());
+                          authProv.fetchStaffQrCodeHistory();
+                          Get.to(() => StaffHomeScreen());
                         });
                       }
                     },
@@ -111,16 +111,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 vertical10,
                 IconButton(
                     onPressed: () async {
-                      bool res =
-                          await LocalAuth.authenticate(accountType: "customer");
-                      if (res) {
-                        authProv.fetchCustomerProfile();
-                        authProv.fetchQrCodeTransactions();
-                        authProv.fetchFlwTransactions();
-                        Future.delayed(Duration(seconds: 1), () {
-                          Get.to(() => BottomNav());
-                        });
-                      }
+                      // bool res =
+                      //     await LocalAuth.authenticate(accountType: "merchant");
+                      // if (res) {
+                      //   Future.delayed(Duration(seconds: 1), () {
+                      //     Get.to(() => MerchantBottomNav());
+                      //   });
+                      //   // authProv.fetchMerchantProfile();
+                      //   // authProv.fetchMerchantBusiness();
+                      //   // authProv.fetchMerchantQrCodeTransaction();
+                      //   // authProv.fetchMerchantFlwTransactions();
+                      //   // authProv.fetchMerchantBank();
+                      //   // authProv.fetchBanks();
+                      //   Future.delayed(Duration(seconds: 1), () {
+                      //     Get.to(() => MerchantBottomNav());
+                      //   });
+                      // }
                     },
                     icon: Icon(
                       Icons.fingerprint_rounded,
@@ -130,12 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: InkWell(
                     onTap: () {
-                      Get.to(SignupScreen());
+                      Get.to(MerchantSignupScreen());
                     },
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        text: 'New to Pocket Pay? ',
+                        text: 'Are you a new merchant? ',
                         style: txStyle14,
                         children: <TextSpan>[
                           TextSpan(
@@ -151,10 +157,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: InkWell(
                     onTap: () {
-                      Get.off(MerchantDecisionScreen());
+                      Get.to(LoginScreen());
                     },
                     child: Text(
-                      "Continue as a merchant",
+                      "Continue as a customer",
                       style: txStyle14.copyWith(color: appPrimaryColor),
                     ),
                   ),

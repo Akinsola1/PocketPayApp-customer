@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pocket_pay_app/constant/export_constant.dart';
 import 'package:pocket_pay_app/screens/authentication/customer/login_screen.dart';
 import 'package:pocket_pay_app/screens/authentication/customer/signup_screen.dart';
+import 'package:pocket_pay_app/screens/authentication/merchant/merchant_decision_screen.dart';
 import 'package:pocket_pay_app/screens/authentication/merchant/merchant_login_screen.dart';
 import 'package:pocket_pay_app/screens/authentication/merchant/merchant_signup_screen.dart';
 import 'package:pocket_pay_app/utils/sizeconfig.dart';
@@ -29,11 +30,16 @@ class _SignUpDecisionFlowState extends State<SignUpDecisionFlow> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthOf(5)),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               vertical20,
               Text(
+                "Hello there 👋",
+                style: txStyle27Bold.copyWith(color: appPrimaryColor),
+              ),
+              Text(
                 "Select how you want to use PocketPay 😎",
-                style: txStyle16,
+                style: txStyle14,
               ),
               vertical20,
               InkWell(
@@ -76,7 +82,7 @@ class _SignUpDecisionFlowState extends State<SignUpDecisionFlow> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "JOIN US AS A CUSTOMER",
+                              "AS A CUSTOMER",
                               style: txStyle14.copyWith(color: appPrimaryColor),
                             ),
                             vertical5,
@@ -140,7 +146,7 @@ class _SignUpDecisionFlowState extends State<SignUpDecisionFlow> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "JOIN US AS A MERCHANT",
+                              "AS A MERCHANT",
                               style: txStyle14.copyWith(color: appPrimaryColor),
                             ),
                             vertical5,
@@ -168,24 +174,22 @@ class _SignUpDecisionFlowState extends State<SignUpDecisionFlow> {
               Spacer(),
               CustomButton(
                   onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
                     print("$option1 $option2");
                     if (option1 == false && option2 == false) return;
 
                     if (option1) {
                       Get.to(LoginScreen());
-                      prefs.setString("appUse", "customer");
+                      // prefs.setString("appUse", "customer");
                     }
                     if (option2) {
-                      Get.to(MerchantLoginScreen());
-                      prefs.setString("appUse", "merchant");
+                      Get.to(MerchantDecisionScreen());
+                      // prefs.setString("appUse", "merchant");
                     }
                   },
                   label: "Proceed"),
-              SizedBox(
-                height: SizeConfig.heightOf(3),
-              )
+              // SizedBox(
+              //   height: SizeConfig.heightOf(),
+              // )
             ],
           ),
         ),

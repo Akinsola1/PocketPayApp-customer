@@ -37,7 +37,7 @@ class _MerchantWalletHistoryState extends State<MerchantWalletHistory> {
                   LottieBuilder.asset(
                       "assets/lottie/51382-astronaut-light-theme.json"),
                   vertical20,
-                  Text("You are yet to perform any transaction",
+                  Text("You are yet to perform a transaction",
                       style: txStyle14),
                   vertical5,
                   Text("Transactions like withdrawals will be displayed here",

@@ -11,6 +11,7 @@ import 'package:pocket_pay_app/api/responsiveState/responsive_state.dart';
 import 'package:pocket_pay_app/constant/export_constant.dart';
 import 'package:pocket_pay_app/screens/customer/scan_to_pay/confirm_transaction_screen.dart';
 import 'package:pocket_pay_app/screens/merchant/business/merchat_confirm_transaction_screen.dart';
+import 'package:pocket_pay_app/screens/staff/staff_confirm_transaction_screen.dart';
 import 'package:pocket_pay_app/utils/sizeconfig.dart';
 import 'package:pocket_pay_app/widgets/export_widget.dart';
 import 'package:provider/provider.dart';
@@ -19,16 +20,16 @@ import 'package:unicons/unicons.dart';
 
 import '../../../api/repositories/user_repository.dart';
 
-class MerchantScanQrCodeScreen extends StatefulWidget {
-  final String businessId;
-  const MerchantScanQrCodeScreen({super.key, required this.businessId});
+class StaffScanQrCodeScreen extends StatefulWidget {
+  const StaffScanQrCodeScreen({
+    super.key,
+  });
 
   @override
-  State<MerchantScanQrCodeScreen> createState() =>
-      _MerchantScanQrCodeScreenState();
+  State<StaffScanQrCodeScreen> createState() => _StaffScanQrCodeScreenState();
 }
 
-class _MerchantScanQrCodeScreenState extends State<MerchantScanQrCodeScreen> {
+class _StaffScanQrCodeScreenState extends State<StaffScanQrCodeScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
@@ -70,9 +71,8 @@ class _MerchantScanQrCodeScreenState extends State<MerchantScanQrCodeScreen> {
                 onTap: () async {
                   bool u = await userProv.fetchQrCodeData(textController.text);
                   if (u) {
-                    Get.off(MerchantConfirmTransactionScreen(
+                    Get.off(StaffConfirmTransactionScreen(
                       tx_ref: textController.text,
-                      businessId: widget.businessId,
                     ));
                   }
                 },

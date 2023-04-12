@@ -25,13 +25,13 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                 "Analytics",
                 style: txStyle27Bold.copyWith(color: appPrimaryColor),
               ),
-              LineChart(
-                LineChartData(
-                    // read about it in the LineChartData section
-                    ),
-                swapAnimationDuration: Duration(milliseconds: 150), // Optional
-                swapAnimationCurve: Curves.linear, // Optional
-              )
+              // LineChart(
+              //   LineChartData(
+              //       // read about it in the LineChartData section
+              //       ),
+              //   swapAnimationDuration: Duration(milliseconds: 150), // Optional
+              //   swapAnimationCurve: Curves.linear, // Optional
+              // )
             ],
           ),
         ),

@@ -103,10 +103,10 @@ class _WalletScreenState extends State<WalletScreen> {
                                         Colors.black.withOpacity(0.5),
                                     tabs: const [
                                       Tab(
-                                        text: 'Wallet',
+                                      text: 'Wallet',
                                       ),
                                       Tab(
-                                        text: 'Qr code',
+                                        text: 'Qr Code',
                                       ),
                                     ],
                                   ),

@@ -170,7 +170,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                             vertical30,
                             Center(
                               child: Text(
-                                "You are yet to perform any transaction. Transactions carried out with QR code will be displayed here.",
+                                "You are yet to perform a transaction. Transactions carried out with QR code will be displayed here.",
                                 textAlign: TextAlign.center,
                                 style: txStyle12.copyWith(color: Colors.grey),
                               ),
@@ -185,6 +185,9 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                                   : 5,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
+                            var transaction = userProv
+                                .merchantQrcodeHistory.data?.reversed
+                                .elementAt(index);
                             return InkWell(
                               onTap: () {
                                 showModalBottomSheet(
@@ -198,9 +201,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                                     ),
                                     context: context,
                                     builder: (context) => TransactionDetails(
-                                          transaction: userProv
-                                              .merchantQrcodeHistory.data!
-                                              .elementAt(index),
+                                          transaction: transaction!,
                                         ));
                               },
                               child: Column(
@@ -209,33 +210,22 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                                     contentPadding: const EdgeInsets.all(0),
                                     leading: CustomNetworkImage(
                                         radius: 50,
-                                        imageUrl: userProv
-                                                    .merchantQrcodeHistory.data
-                                                    ?.elementAt(index)
-                                                    .status ==
+                                        imageUrl: transaction?.status ==
                                                 "pending"
                                             ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlHMlGaIm-FgKBskWObPrJh6jkx9vUXEreyw&usqp=CAU"
-                                            : "${userProv.merchantQrcodeHistory.data?.elementAt(index).merchantBusinessLogo}"),
+                                            : "${transaction?.merchantBusinessLogo}"),
                                     title: Text(
-                                      userProv.merchantQrcodeHistory.data
-                                                  ?.elementAt(index)
-                                                  .status ==
-                                              "pending"
+                                      transaction?.status == "pending"
                                           ? "Qr code not used"
-                                          : userProv.merchantQrcodeHistory.data
-                                                      ?.elementAt(index)
-                                                      .status ==
-                                                  "expired"
+                                          : transaction?.status == "expired"
                                               ? "Qr code expired"
-                                              : "${userProv.merchantQrcodeHistory.data?.elementAt(index).merchantBusinessName}",
+                                              : "${transaction?.merchantBusinessName}",
                                       style: txStyle14Bold,
                                     ),
                                     subtitle: Text(
-                                      DateFormat.MMMMd().format(userProv
-                                              .merchantQrcodeHistory.data
-                                              ?.elementAt(index)
-                                              .dateCreated ??
-                                          DateTime.now()),
+                                      DateFormat.MMMMd().format(
+                                          transaction?.dateCreated ??
+                                              DateTime.now()),
                                       style: txStyle12,
                                     ),
                                     trailing: Column(
@@ -246,7 +236,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                                       children: [
                                         Text(
                                           convertStringToCurrency(
-                                              "${userProv.merchantQrcodeHistory.data?.elementAt(index).amount}"),
+                                              "${transaction?.amount}"),
                                           style: txStyle14,
                                         ),
                                         vertical5,
@@ -256,7 +246,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: Color(transactionStatus(
-                                                  "${userProv.merchantQrcodeHistory.data?.elementAt(index).status}"))),
+                                                  "${transaction?.status}"))),
                                         )
                                       ],
                                     ),

@@ -6,26 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:pocket_pay_app/screens/authentication/merchant/merchant_create_password_screen.dart';
+import 'package:pocket_pay_app/api/repositories/merchant_repository.dart';
+import 'package:pocket_pay_app/constant/colors.dart';
+import 'package:pocket_pay_app/screens/customer/main/success_screen.dart';
+import 'package:pocket_pay_app/utils/sizeconfig.dart';
+import 'package:pocket_pay_app/widgets/custom_button_load.dart';
+import 'package:pocket_pay_app/widgets/export_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../api/repositories/user_repository.dart';
-import '../../../constant/colors.dart';
-import '../../../constant/size.dart';
-import '../../../constant/text_Style.dart';
-import '../../../utils/sizeconfig.dart';
-import '../../../widgets/custom_button.dart';
-import '../../../widgets/custom_textfield.dart';
-import '../../../widgets/customer_appbar.dart';
+import '../../../constant/export_constant.dart';
 
-class MerchantSignupScreen extends StatefulWidget {
-  const MerchantSignupScreen({super.key});
+class AddStaffScreen extends StatefulWidget {
+  final String businessId;
+  const AddStaffScreen({super.key, required this.businessId});
 
   @override
-  State<MerchantSignupScreen> createState() => _MerchantSignupScreenState();
+  State<AddStaffScreen> createState() => _AddStaffScreenState();
 }
 
-class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
+class _AddStaffScreenState extends State<AddStaffScreen> {
   final _key = GlobalKey<FormState>();
 
   final _firstNameController = TextEditingController();
@@ -36,27 +36,21 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
 
   File? file;
   String _filePath = "";
+
   @override
   Widget build(BuildContext context) {
-    final authProv = Provider.of<UserProvider>(context);
+    final userProv = Provider.of<MerchantProvider>(context);
 
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(
+        title: "Add staff",
+      ),
       body: Form(
         key: _key,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthOf(4)),
+          padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthOf(5)),
           child: ListView(
             children: [
-              Text(
-                "Business owner info",
-                style: txStyle27Bold.copyWith(color: appPrimaryColor),
-              ),
-              Text(
-                "Let's know about our CEO 🫡",
-                style: txStyle14,
-              ),
-              vertical20,
               Center(
                 child: InkWell(
                   onTap: () async {
@@ -112,7 +106,7 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
               vertical5,
               Center(
                   child: Text(
-                "Upload your best picture 🤳",
+                "Tap to upload staff image",
                 style: txStyle12,
               )),
               vertical10,
@@ -121,7 +115,7 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
                 hintText: "First Name",
                 controller: _firstNameController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) => authProv.validateName(value!),
+                validator: (value) => userProv.validateName(value!),
               ),
               vertical10,
               CustomTextField(
@@ -129,7 +123,7 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
                 hintText: "Last Name",
                 controller: _lastNameController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) => authProv.validateName(value!),
+                validator: (value) => userProv.validateName(value!),
               ),
               vertical10,
               CustomTextField(
@@ -137,7 +131,7 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
                 hintText: "Other Name",
                 controller: _otherNameController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) => authProv.validateName(value!),
+                validator: (value) => userProv.validateName(value!),
               ),
               vertical10,
               CustomTextField(
@@ -145,7 +139,7 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
                 hintText: "Email",
                 controller: _emailController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) => authProv.validateEmail(value!),
+                validator: (value) => userProv.validateEmail(value!),
               ),
               vertical10,
               CustomTextField(
@@ -153,20 +147,34 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
                 hintText: "Phone Number",
                 controller: _phoneController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value) => authProv.validatePhoneNumber(value!),
+                validator: (value) => userProv.validatePhoneNumber(value!),
               ),
               vertical20,
-              CustomButton(
+              CustomButtonLoad(
+                userProv: userProv.state,
                   onTap: () async {
-                    // if (!_key.currentState!.validate()) return;
+                    if (!_key.currentState!.validate()) return;
 
-                    Get.to(MerchantCreatePasswordScreen(
-                      firstName: _firstNameController.text,
-                      lastName: _lastNameController.text,
-                      otherName: _otherNameController.text,
-                      email: _emailController.text,
-                      phone: _phoneController.text,
-                    ));
+                    bool u = await userProv.registerStaff(
+                        firstName: _firstNameController.text,
+                        lastName: _lastNameController.text,
+                        otherName: _otherNameController.text,
+                        email: _emailController.text,
+                        phone: _phoneController.text,
+                        businessId: widget.businessId,
+                        profilePicture: _filePath,
+                        );
+                        
+                    if (u) {
+                      Get.off(SuccessScreen(
+                          content: "User Profile created successfully 🥳🎉",
+                          buttonText: "Finish",
+                          onTap: () {
+                            userProv.fetchBusinessStaffs(
+                                businessId: widget.businessId);
+                            Get.close(1);
+                          }));
+                    }
                   },
                   label: "Proceed")
             ],

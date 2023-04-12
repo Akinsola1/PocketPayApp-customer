@@ -32,6 +32,7 @@ class Data {
     this.firstName,
     this.otherNames,
     this.lastName,
+    this.merchantId,
     this.nin,
     this.bvn,
     this.email,
@@ -55,6 +56,7 @@ class Data {
   String? firstName;
   String? otherNames;
   String? lastName;
+  String? merchantId;
   String? nin;
   String? bvn;
   String? email;
@@ -78,6 +80,8 @@ class Data {
         firstName: json["firstName"],
         otherNames: json["otherNames"],
         lastName: json["lastName"],
+        merchantId: json["merchantId"],
+
         nin: json["nin"],
         bvn: json["bvn"],
         email: json["email"],

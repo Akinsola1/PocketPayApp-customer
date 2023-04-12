@@ -14,12 +14,10 @@ import 'package:provider/provider.dart';
 
 import '../../../api/repositories/user_repository.dart';
 
-class MerchantConfirmTransactionScreen extends StatelessWidget {
+class StaffConfirmTransactionScreen extends StatelessWidget {
   final String tx_ref;
-  final String businessId;
 
-  const MerchantConfirmTransactionScreen(
-      {super.key, required this.tx_ref, required this.businessId});
+  const StaffConfirmTransactionScreen({super.key, required this.tx_ref});
 
   @override
   Widget build(BuildContext context) {
@@ -67,14 +65,12 @@ class MerchantConfirmTransactionScreen extends StatelessWidget {
               ),
               vertical20,
               CustomButtonLoad(
-                userProv: userProv.state,
+                  userProv: userProv.state,
                   onTap: () async {
-                    bool u =
-                        await userProv.completeScanQrCode(tx_ref, businessId);
+                    bool u = await userProv.staffScanQrCOde(tx_ref);
                     if (u) {
                       Get.off(SuccessScreen(
-                          content:
-                              "Transaction successful! I hope everyone is happy",
+                          content: "Transaction successful!",
                           onTap: () {
                             Get.back();
                           }));

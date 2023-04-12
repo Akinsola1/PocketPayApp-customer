@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:pocket_pay_app/api/api_utils/api_route.dart';
 import 'package:pocket_pay_app/api/models/merchant/all_bank_model.dart';
+import 'package:pocket_pay_app/api/models/merchant/business_staff_model.dart';
 import 'package:pocket_pay_app/api/models/merchant/merchant_bank_model.dart';
 import 'package:pocket_pay_app/api/models/merchant/merchant_business_model.dart';
 import 'package:pocket_pay_app/api/models/merchant/merchant_fetch_QRCode_data.dart';
@@ -13,9 +14,12 @@ import 'package:pocket_pay_app/api/models/merchant/merchant_generate_qrcode_res_
 import 'package:pocket_pay_app/api/models/merchant/merchant_profile_model.dart';
 import 'package:pocket_pay_app/api/models/merchant/merchant_qr_code_histoty_model.dart';
 import 'package:pocket_pay_app/api/models/merchant/resolved_bank_model.dart';
+import 'package:pocket_pay_app/api/models/staff/staff_profile_model.dart';
 import 'package:pocket_pay_app/api/responsiveState/base_view_model.dart';
 import 'package:pocket_pay_app/constant/colors.dart';
+import 'package:pocket_pay_app/screens/authentication/merchant/staff_qr_transaction_history_model.dart';
 import 'package:pocket_pay_app/screens/merchant/business/merchant_business_screen.dart';
+import 'package:pocket_pay_app/services/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/validators.dart';
@@ -42,6 +46,18 @@ class MerchantProvider extends BaseNotifier with Validators {
     return headerToken;
   }
 
+  Future<Map<String, String>> headerWithToken1() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString("SToken")!;
+
+    Map<String, String> headerToken = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Token $token',
+    };
+    return headerToken;
+  }
+
   MerchantProfileModel merchantProfileModel = MerchantProfileModel();
   MerchantBusinessModel merchantBusinessModel = MerchantBusinessModel();
   MerchantQrcodeHistory merchantQrcodeHistory = MerchantQrcodeHistory();
@@ -49,6 +65,11 @@ class MerchantProvider extends BaseNotifier with Validators {
   ResolvedBankModel resolvedBankModel = ResolvedBankModel();
   FlwTransactionModel flwTransactionModel = FlwTransactionModel();
   MerchantBanksModel merchantBanksModel = MerchantBanksModel();
+  StaffProfileModel staffProfileModel = StaffProfileModel();
+  BusinessStaffModel businessStaffModel = BusinessStaffModel();
+
+  StaffQrCodeTransactionModel staffQrCodeTransactionModel =
+      StaffQrCodeTransactionModel();
 
   List<AllBankModel> allBankModel = [];
   List<BusinessData> businessDataList = [];
@@ -639,6 +660,219 @@ class MerchantProvider extends BaseNotifier with Validators {
 
       setState(ViewState.Idle);
       return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  // staff
+
+  Future<bool> fetchBusinessStaffs({String? businessId}) async {
+    setState(ViewState.Busy);
+
+    try {
+      var responsebody = await API().get(
+          "${apiRoute.fetchMerchantStaffs}/$businessId",
+          await headerWithToken());
+      print(responsebody);
+      businessStaffModel = businessStaffModelFromJson(responsebody);
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> staffLogin({
+    String? phone,
+    String? password,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(ViewState.Busy);
+    try {
+      Map val = {
+        "phone": phone,
+        "password": password,
+      };
+      var responsebody =
+          await API().post(apiRoute.staffLogin, header, jsonEncode(val));
+      var response = jsonDecode(responsebody);
+      localStorage.setString("SToken", response["token"]);
+      print(responsebody);
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> fetchStaffProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(ViewState.Busy);
+    try {
+      var responsebody =
+          await API().get(apiRoute.fetchStaffProfile, await headerWithToken1());
+      staffProfileModel = staffProfileModelFromJson(responsebody);
+      print(responsebody);
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> staffGenerateQrCode({
+    String? amount,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(ViewState.Busy);
+    try {
+      Map val = {
+        "amount": amount,
+        "businessId": staffProfileModel.data!.businessId,
+        "merchantId": staffProfileModel.data!.merchantId,
+        "staffId": staffProfileModel.data!.staffId,
+      };
+
+      var responsebody = await API().post(apiRoute.staffGenerateQrCode,
+          await headerWithToken1(), jsonEncode(val));
+      var response = jsonDecode(responsebody);
+
+      print(responsebody);
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> staffScanQrCOde(String tx_ref) async {
+    setState(ViewState.Busy);
+    try {
+      Map val = {
+        "tx_ref": tx_ref,
+      };
+      var responsebody = await API().post(
+          apiRoute.staffScanQrCode, await headerWithToken1(), jsonEncode(val));
+      log("complete scan customer qr code || $responsebody");
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> fetchStaffQrCodeHistory() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    log("${staffProfileModel.data?.staffId}");
+    setState(ViewState.Busy);
+    try {
+      var responsebody = await API().get(
+          "${apiRoute.fetchStaffQrCodeHistory}/${staffProfileModel.data?.staffId}",
+          await headerWithToken1());
+
+      staffQrCodeTransactionModel =
+          staffQrCodeTransactionModelFromJson(responsebody);
+
+      print(responsebody);
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> registerStaff({
+    String? firstName,
+    String? lastName,
+    String? otherName,
+    String? email,
+    String? phone,
+    String? businessId,
+    String? profilePicture,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(ViewState.Busy);
+
+    try {
+      if (profilePicture!.isNotEmpty) {
+        Map<String, dynamic> val = {
+          "firstName": firstName,
+          "lastName": lastName,
+          "otherName": otherName,
+          "email": email,
+          "phone": phone,
+          "businessId": businessId,
+          "merchantId": merchantProfileModel.data?.merchantId
+        };
+
+        log("${val}");
+        FormData formData;
+        MultipartFile userPicture;
+        String id = DateTime.now().millisecondsSinceEpoch.toString();
+        Map<String, dynamic> noMediaReq = {}..addAll(val);
+        userPicture = await MultipartFile.fromFile(
+          profilePicture,
+          filename: '$id/${profilePicture}',
+        );
+        formData =
+            FormData.fromMap(val..addAll({"profilePicture": userPicture}));
+        var responsebody = await API().post(
+            apiRoute.registerStaff, await headerWithToken(), noMediaReq,
+            multimediaRequest: formData);
+
+        print(responsebody);
+        setState(ViewState.Idle);
+
+        return true;
+      } else {
+        Map<String, dynamic> val = {
+          "firstName": firstName,
+          "lastName": lastName,
+          "otherName": otherName,
+          "email": email,
+          "phone": phone,
+          "businessId": businessId,
+          "merchantId": merchantProfileModel.data?.merchantId,
+          "profilePicture": profilePicture,
+        };
+        log("${val}");
+
+        var responsebody = await API().post(
+          apiRoute.registerStaff,
+          await headerWithToken(),
+          jsonEncode(val),
+        );
+
+        print(responsebody);
+        setState(ViewState.Idle);
+        return true;
+      }
     } catch (e) {
       displayError(title: "Error", message: e.toString());
       print(e);

@@ -28,12 +28,6 @@ class MerchantLoginScreen extends StatefulWidget {
 }
 
 class _MerchantLoginScreenState extends State<MerchantLoginScreen> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    SizeConfig().init(context);
-  }
-
   final _loginkey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _passwordcontroller = TextEditingController();

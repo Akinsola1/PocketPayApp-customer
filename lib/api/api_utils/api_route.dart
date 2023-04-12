@@ -3,7 +3,6 @@ class apiRoute {
   static const local = "http://localhost:8000";
   static const heroku = "https://pocketpay.herokuapp.com";
 
-
   static const base = "$local/customer";
   static const merchantBase = "$local/merchant";
 
@@ -21,7 +20,7 @@ class apiRoute {
   static const scanMerchantQrCode = "$base/customer-scan-QR-code";
   static const fetchQRCodeTransaction = "$base/fetch-QRCode-Transaction";
   static const fetchFlwTransactions = "$base/fetch-flw-Transaction";
-  static const tempFundingMethod = "$base/temp_funding_method";
+  static const fundWalletBankTransfer = "$base/initiate-funding-bank-transfer";
 
   // merchant
   static const merchantSignUp = "$merchantBase/register-merchant";
@@ -63,4 +62,17 @@ class apiRoute {
 
   static const fetchMerchantBank = "$merchantBase/fetch-merchant-bank";
 
+  //staffs
+  static const fetchMerchantStaffs = "$merchantBase/fetch-business-staffs";
+
+  static const registerStaff = "$merchantBase/register-staff";
+  static const staffLogin = "$merchantBase/login-staff";
+  static const fetchStaffProfile = "$merchantBase/fetch-staff-profile";
+
+  static const staffGenerateQrCode = "$merchantBase/staff-generate-qr-code";
+  static const staffScanQrCode = "$merchantBase/staff-scan-qr-code";
+
+  static const fetchStaffQrCodeHistory =
+      "$merchantBase/fetch-staff-QRCode-transaction";
 }
+// Akinsola9c258

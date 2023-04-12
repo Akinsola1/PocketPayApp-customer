@@ -14,7 +14,7 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container( 
         height: radius,
         width: radius,
         decoration: BoxDecoration(
@@ -33,7 +33,7 @@ class CustomNetworkImage extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       image: NetworkImage(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8A2wOvDj7sAobit1mD4lCc6ilEaBm_CF3AQ&usqp=CAU'),
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwsArWf2lZuLGqco6QoGM13keJb078XIgNWA&usqp=CAU'),
                       fit: BoxFit.cover)),
             ),
           ),

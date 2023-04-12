@@ -101,7 +101,6 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
 
                   if (u) {
                     authProv.fetchCustomerProfile();
-                    authProv.fetchCustomerProfile();
                     authProv.fetchQrCodeTransactions();
                     authProv.fetchFlwTransactions();
                     Get.to(BottomNav());
