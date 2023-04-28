@@ -110,12 +110,8 @@ class _WalletHistoryState extends State<WalletHistory> {
                             width: 10,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: userProv.flwTransactionModel.data
-                                            ?.elementAt(index)
-                                            .status ==
-                                        'successful'
-                                    ? Color(0xff00C853)
-                                    : Colors.red),
+                                color: Color(transactionStatus(
+                                    "${userProv.flwTransactionModel.data?.elementAt(index).status}"))),
                           )
                         ],
                       ),
@@ -184,7 +180,11 @@ class _TransactionDetailsState extends State<TransactionDetails> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("${widget.transaction.txRef}", style: txStyle14),
+              SizedBox(
+                width: SizeConfig.widthOf(60),
+                child: Text("${widget.transaction.txRef}",
+                    overflow: TextOverflow.ellipsis, style: txStyle14),
+              ),
               Text(
                 "Reference Number",
                 style: txStyle14.copyWith(color: Colors.grey),
@@ -196,7 +196,11 @@ class _TransactionDetailsState extends State<TransactionDetails> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("${widget.transaction.flwRef}", style: txStyle14),
+              SizedBox(
+                width: SizeConfig.widthOf(60),
+                child: Text("${widget.transaction.flwRef}",
+                    overflow: TextOverflow.ellipsis, style: txStyle14),
+              ),
               Text(
                 "Flw Ref Number",
                 style: txStyle14.copyWith(color: Colors.grey),

@@ -90,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomButtonLoad(
                     userProv: authProv.state,
                     onTap: () async {
+
                       if (!_loginkey.currentState!.validate()) return;
                       bool response = await authProv.login(
                           phone: _phoneController.text.trim(),

@@ -45,6 +45,7 @@ class Data {
     this.contactPersonName,
     this.contactPersonPhone,
     this.contactPersonRelationship,
+    this.phoneVerified,
     this.setPin,
     this.addBank,
     this.contactPersonAdded,
@@ -70,6 +71,7 @@ class Data {
   String? contactPersonPhone;
   String? contactPersonRelationship;
   bool? setPin;
+  bool? phoneVerified;
   bool? addBank;
   bool? contactPersonAdded;
   bool? kycVerified;
@@ -96,6 +98,7 @@ class Data {
         contactPersonRelationship: json["contactPersonRelationship"],
         setPin: json["setPin"],
         addBank: json["addBank"],
+        phoneVerified: json["phoneVerified"],
         contactPersonAdded: json["contactPersonAdded"],
         kycVerified: json["kycVerified"],
         owner: json["owner"],

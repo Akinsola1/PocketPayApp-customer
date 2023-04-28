@@ -49,10 +49,16 @@ class _CustomButtonLoadState extends State<CustomButtonLoad> {
             idleWidget: Text(
               widget.label,
               textAlign: TextAlign.center,
-              style: txStyle14.copyWith(color: widget.textColor ?? Colors.black),
+              style:
+                  txStyle14.copyWith(color: widget.textColor ?? Colors.black),
             ),
-            busyWidget:
-                CircularProgressIndicator(color: Colors.white),
+            busyWidget: SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                )),
           ),
         ),
       ),

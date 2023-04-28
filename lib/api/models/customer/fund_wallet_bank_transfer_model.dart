@@ -75,7 +75,7 @@ class Authorization {
     String? transferReference;
     String? transferAccount;
     String? transferBank;
-    int ?accountExpiration;
+    dynamic accountExpiration;
     String? transferNote;
     String? transferAmount;
     String? mode;

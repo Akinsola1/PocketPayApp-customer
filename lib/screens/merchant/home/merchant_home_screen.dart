@@ -42,10 +42,12 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
             child: RefreshIndicator(
               color: appPrimaryColor,
               onRefresh: () async {
-                userProv.fetchMerchantProfile();
-                userProv.fetchMerchantBusiness();
-                userProv.fetchMerchantQrCodeTransaction();
-                userProv.fetchMerchantFlwTransactions();
+                await userProv.fetchMerchantProfile();
+                await userProv.fetchMerchantBusiness();
+                await userProv.fetchMerchantQrCodeTransaction();
+                await userProv.fetchMerchantFlwTransactions();
+                await userProv.fetchMerchantBank();
+
               },
               child: ListView(
                 // crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +64,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hello ${capitalizeFirstText(userProv.merchantProfileModel.data!.firstName!)} 👋",
+                            "Hello ${capitalizeFirstText(userProv.merchantProfileModel.data?.firstName ?? "merchant")} 👋",
                             style: txStyle14,
                           ),
                           vertical5,
@@ -82,10 +84,13 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                   ),
                   vertical10,
                   todoWidget(
-                      completed: userProv.merchantProfileModel.data!.addBank! &&
-                          userProv.merchantProfileModel.data!.kycVerified! &&
-                          userProv
-                              .merchantProfileModel.data!.contactPersonAdded!,
+                      completed: (userProv.merchantProfileModel.data?.addBank ??
+                              false) &&
+                          (userProv.merchantProfileModel.data?.kycVerified ??
+                              false) &&
+                          (userProv.merchantProfileModel.data
+                                  ?.contactPersonAdded ??
+                              false),
                       onpressed: () {
                         Get.to(MerchantCompleteProfileScreen());
                       },
@@ -113,7 +118,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                           },
                           scrollDirection: Axis.horizontal,
                           itemCount:
-                              userProv.merchantBusinessModel.data!.length,
+                              userProv.merchantBusinessModel.data?.length ?? 0,
                           itemBuilder: (context, index) {
                             var business = userProv.merchantBusinessModel.data
                                 ?.elementAt(index);
@@ -164,7 +169,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                     ],
                   ),
                   vertical10,
-                  userProv.merchantQrcodeHistory.data!.isEmpty
+                  userProv.merchantQrcodeHistory.data?.isEmpty ?? true
                       ? Column(
                           children: [
                             vertical30,
@@ -367,7 +372,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                  DateFormat.yMMMMd()
+                  DateFormat.yMd().add_jm()
                       .format(widget.transaction.dateCreated ?? DateTime.now()),
                   style: txStyle14),
               Text(

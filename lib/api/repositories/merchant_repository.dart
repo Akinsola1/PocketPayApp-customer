@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
+import 'package:intl/intl.dart';
 import 'package:pocket_pay_app/api/api_utils/api_route.dart';
 import 'package:pocket_pay_app/api/models/merchant/all_bank_model.dart';
 import 'package:pocket_pay_app/api/models/merchant/business_staff_model.dart';
@@ -22,6 +23,7 @@ import 'package:pocket_pay_app/screens/merchant/business/merchant_business_scree
 import 'package:pocket_pay_app/services/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../screens/merchant/business/business_analytics_screen.dart';
 import '../../utils/validators.dart';
 import '../api_utils/api_helper.dart';
 import '../models/customer/flw_transaction_model.dart';
@@ -73,6 +75,7 @@ class MerchantProvider extends BaseNotifier with Validators {
 
   List<AllBankModel> allBankModel = [];
   List<BusinessData> businessDataList = [];
+  List<BusinessSalesData> individualBusinessData = [];
 
   MerchantFetchQRcodeDataModel merchantFetchQrCodeData =
       MerchantFetchQRcodeDataModel();
@@ -139,8 +142,21 @@ class MerchantProvider extends BaseNotifier with Validators {
               double.tryParse(
                   "${merchantBusinessModel.data?.elementAt(i).businessWalletBalance}")!));
     }
+  }
 
-    log("${businessDataList.elementAt(2).amount}");
+  sortBusinessDataToday() {
+    individualBusinessData.clear();
+    for (var i = 0; i < businessQrCodeHistory.data!.length; i++) {
+      individualBusinessData.insert(
+          0,
+          BusinessSalesData(
+              // "${businessQrCodeHistory.data?.elementAt(i).dateCreated}",
+              DateTime.parse(
+                  "${businessQrCodeHistory.data?.elementAt(i).dateCreated}"),
+              double.tryParse(
+                  "${businessQrCodeHistory.data?.elementAt(i).amount}")!));
+    }
+    log("${individualBusinessData.length}");
   }
 
   Future<bool> merchantLogin({
@@ -346,7 +362,6 @@ class MerchantProvider extends BaseNotifier with Validators {
       merchantBusinessModel = merchantBusinessModelFromJson(responsebody);
       sortBusinessData();
 
-      // ApiResponse response = ApiResponse.fromJson(responsebody);
       print(responsebody);
       setState(ViewState.Idle);
       return true;
@@ -412,6 +427,7 @@ class MerchantProvider extends BaseNotifier with Validators {
           "${apiRoute.fetchBusinessQrCodeTransaction}/$businessId",
           await headerWithToken());
       businessQrCodeHistory = merchantQrcodeHistoryFromJson(responsebody);
+      sortBusinessDataToday();
       setState(ViewState.Idle);
       return true;
     } catch (e) {
@@ -598,12 +614,18 @@ class MerchantProvider extends BaseNotifier with Validators {
     }
   }
 
-  Future<bool> tempWithdrawMethod(String amount) async {
+  Future<bool> tempWithdrawMethod(
+      String amount, String accountNum, String bankCode) async {
     setState(ViewState.Busy);
-    Map val = {"amount": amount};
+    Map val = {
+      "amount": amount,
+      "bankCode": bankCode,
+      "accountNumber": accountNum
+    };
+    log(val.toString());
     try {
-      var responsebody = await API().post(apiRoute.tempWithdrawMethod,
-          await headerWithToken(), jsonEncode(val));
+      var responsebody = await API().post(
+          apiRoute.merchantWithdraw, await headerWithToken(), jsonEncode(val));
 
       setState(ViewState.Idle);
       return true;
@@ -657,6 +679,42 @@ class MerchantProvider extends BaseNotifier with Validators {
       var responsebody =
           await API().get(apiRoute.fetchMerchantBank, await headerWithToken());
       merchantBanksModel = merchantBanksModelFromJson(responsebody);
+
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> sendOTP() async {
+    setState(ViewState.Busy);
+    Map val = {"phone": merchantProfileModel.data?.phone};
+
+    try {
+      var responsebody = await API()
+          .post(apiRoute.sendOTP, await headerWithToken(), jsonEncode(val));
+
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
+  Future<bool> validateOTP(String OTP) async {
+    setState(ViewState.Busy);
+    Map val = {"phone": merchantProfileModel.data?.phone, "OTP": OTP};
+
+    try {
+      var responsebody = await API()
+          .post(apiRoute.validateOTP, await headerWithToken(), jsonEncode(val));
 
       setState(ViewState.Idle);
       return true;

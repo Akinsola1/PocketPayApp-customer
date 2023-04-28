@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pattern_formatter/numeric_formatter.dart';
 import 'package:pocket_pay_app/api/repositories/merchant_repository.dart';
@@ -33,6 +34,8 @@ class _MerchantGenerateQrCodeScreenState
   late FocusNode myFocusNode;
   final _key = GlobalKey<FormState>();
   int? selectedRadio;
+  String accountNumber = "";
+  String bankCode = "";
 
   @override
   void initState() {
@@ -156,6 +159,10 @@ class _MerchantGenerateQrCodeScreenState
                               groupValue: selectedRadio,
                               activeColor: appPrimaryColor,
                               onChanged: (val) async {
+                                accountNumber =
+                                    "${userProv.merchantBanksModel.data?.elementAt(index).accNum}";
+                                bankCode =
+                                    "${userProv.merchantBanksModel.data?.elementAt(index).bankCode}";
                                 setSelectedRadio(val!);
                               },
                             ),
@@ -197,8 +204,19 @@ class _MerchantGenerateQrCodeScreenState
               CustomButton(
                   onTap: () async {
                     if (!_key.currentState!.validate()) return;
-
+                    if (selectedRadio == null) {
+                      Fluttertoast.showToast(
+                          msg: "Select a bank to proceed",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      return;
+                    }
                     Get.to(MerchantPinScreen(
+                        accountNumber: accountNumber,
+                        bankCode: bankCode,
                         amount: amountController.text.replaceAll(",", "")));
                   },
                   label: "Proceed"),

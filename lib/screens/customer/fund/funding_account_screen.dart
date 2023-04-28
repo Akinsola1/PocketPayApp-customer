@@ -88,6 +88,8 @@ class FundingWalletBankTransferScreen extends StatelessWidget {
             Spacer(),
             CustomButton(
                 onTap: () {
+                  userProv.fetchFlwTransactions();
+                  userProv.fetchCustomerProfile();
                   Get.close(1);
                 },
                 label: "Done")

@@ -46,9 +46,11 @@ class HomeScreen extends StatelessWidget {
               await userProv.fetchCustomerProfile();
               await userProv.fetchQrCodeTransactions();
               await userProv.fetchFlwTransactions();
+              
             },
             child: ListView(
               children: [
+                vertical10,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

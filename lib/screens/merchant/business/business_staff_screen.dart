@@ -46,6 +46,11 @@ class _BusinessStaffScreenState extends State<BusinessStaffScreen> {
                 imageUrl: "${widget.data.businessLogo}",
                 radius: 120,
               ),
+              vertical10,
+              Text(
+                "${widget.data.businessId}",
+                style: txStyle14Bold,
+              ),
               vertical30,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,58 +72,66 @@ class _BusinessStaffScreenState extends State<BusinessStaffScreen> {
                 ],
               ),
               vertical20,
-              userProv.businessStaffModel.data!.isEmpty
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                            "assets/lottie/51382-astronaut-light-theme.json"),
-                        vertical20,
-                        Text("You are yet to add a staff to this business",
-                            style: txStyle14),
-                      ],
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: userProv.businessStaffModel.data?.length,
-                      itemBuilder: (context, index) {
-                        var staff =
-                            userProv.businessStaffModel.data?.elementAt(index);
-                        return Column(
+              userProv.businessStaffModel.data == null
+                  ? SizedBox.shrink()
+                  : userProv.businessStaffModel.data!.isEmpty
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: CustomNetworkImage(
-                                  radius: 50,
-                                  imageUrl: "${staff?.profilePicture}"),
-                              title: Text(
-                                capitalizeFirstText(
-                                    "${staff?.firstName} ${staff?.lastName}"),
-                                style: txStyle14,
-                              ),
-                              subtitle: Text(
-                                "${staff?.staffId}",
-                                style: txStyle12.copyWith(color: Colors.grey),
-                              ),
-                              trailing: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.red.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 10),
-                                  child: Text(
-                                    "Suspend",
+                            Lottie.asset(
+                                "assets/lottie/51382-astronaut-light-theme.json"),
+                            vertical20,
+                            Text("You are yet to add a staff to this business",
+                                style: txStyle14),
+                                vertical10,
+                            Text(
+                                "Staffs added to a business can login with credentials created by the admin to perform transactions",
+                                textAlign: TextAlign.center,
+                                style: txStyle12.copyWith(color: Colors.grey)),
+                          ],
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: userProv.businessStaffModel.data?.length,
+                          itemBuilder: (context, index) {
+                            var staff = userProv.businessStaffModel.data
+                                ?.elementAt(index);
+                            return Column(
+                              children: [
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: CustomNetworkImage(
+                                      radius: 50,
+                                      imageUrl: "${staff?.profilePicture}"),
+                                  title: Text(
+                                    capitalizeFirstText(
+                                        "${staff?.firstName} ${staff?.lastName}"),
+                                    style: txStyle14,
+                                  ),
+                                  subtitle: Text(
+                                    "${staff?.staffId}",
                                     style:
-                                        txStyle13.copyWith(color: Colors.red),
+                                        txStyle12.copyWith(color: Colors.grey),
+                                  ),
+                                  trailing: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.red.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 10),
+                                      child: Text(
+                                        "Suspend",
+                                        style: txStyle13.copyWith(
+                                            color: Colors.red),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            Divider(),
-                          ],
-                        );
-                      }),
+                                Divider(),
+                              ],
+                            );
+                          }),
             ],
           ),
         ),

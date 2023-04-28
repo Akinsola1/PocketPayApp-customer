@@ -38,6 +38,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 onpressed: () {
                   Get.to(CreatePinScree());
                 },
+                title: "Verify Phone number",
+                subtitle: "Provide the 4 digit code sent to your number"),
+            vertical10,
+            todoWidget(
+                completed: userProv.userProfile.data!.setPin!,
+                onpressed: () {
+                  Get.to(CreatePinScree());
+                },
                 title: "Create PIN",
                 subtitle:
                     "Creeate a four(4) digit personal identification number"),

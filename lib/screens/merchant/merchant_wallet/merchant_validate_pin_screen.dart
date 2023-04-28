@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pocket_pay_app/api/repositories/merchant_repository.dart';
 import 'package:pocket_pay_app/constant/text_style.dart';
 import 'package:pocket_pay_app/screens/customer/main/success_screen.dart';
+import 'package:pocket_pay_app/widgets/custom_button_load.dart';
 import 'package:pocket_pay_app/widgets/export_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -12,10 +13,14 @@ import '../../../widgets/customer_appbar.dart';
 
 class MerchantPinScreen extends StatefulWidget {
   final String amount;
+  final String accountNumber;
+  final String bankCode;
 
   const MerchantPinScreen({
     Key? key,
     required this.amount,
+    required this.accountNumber,
+    required this.bankCode,
   }) : super(key: key);
 
   @override
@@ -55,21 +60,23 @@ class _MerchantPinScreenState extends State<MerchantPinScreen> {
             ),
 
             Spacer(),
-            CustomButton(
+            CustomButtonLoad(
+                userProv: userProv.state,
                 onTap: () async {
                   bool res1 =
                       await userProv.validateMerchantPIN(otpController.text);
                   if (res1) {
-                    bool u = await userProv.tempWithdrawMethod(widget.amount);
+                    bool u = await userProv.tempWithdrawMethod(
+                        widget.amount, widget.accountNumber, widget.bankCode);
 
-                    // bool u =
-                    //     await userProv.completeScanQrCode("${widget.tx_ref}");
                     if (u) {
                       userProv.fetchMerchantProfile();
                       userProv.fetchMerchantFlwTransactions();
                       Get.to(SuccessScreen(
-                        content: "Withdrawal successful",
+                        content:
+                            "Withdrawal Queued successfully. You will be\nnotified when withdrawal is successful.",
                         onTap: () {
+                          
                           Get.close(3);
                         },
                       ));

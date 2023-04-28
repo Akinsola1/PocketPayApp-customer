@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pocket_pay_app/constant/text_style.dart';
 import 'package:pocket_pay_app/screens/customer/main/success_screen.dart';
+import 'package:pocket_pay_app/widgets/custom_button_load.dart';
 import 'package:pocket_pay_app/widgets/export_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +59,8 @@ class _PinScreenState extends State<PinScreen> {
             ),
 
             Spacer(),
-            CustomButton(
+            CustomButtonLoad(
+              userProv: userProv.state,
                 onTap: () async {
                   bool res1 =
                       await userProv.validateUserPin(otpController.text);
@@ -68,7 +70,7 @@ class _PinScreenState extends State<PinScreen> {
                     if (u) {
                       userProv.fetchQrCodeTransactions();
                       Get.to(SuccessScreen(
-                        content: "Payment done successfully",
+                        content: "Payment successful",
                         onTap: () {
                           userProv.fetchCustomerProfile();
                           userProv.fetchQrCodeTransactions();

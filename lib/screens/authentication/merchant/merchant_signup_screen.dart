@@ -158,7 +158,7 @@ class _MerchantSignupScreenState extends State<MerchantSignupScreen> {
               vertical20,
               CustomButton(
                   onTap: () async {
-                    // if (!_key.currentState!.validate()) return;
+                    if (!_key.currentState!.validate()) return;
 
                     Get.to(MerchantCreatePasswordScreen(
                       firstName: _firstNameController.text,

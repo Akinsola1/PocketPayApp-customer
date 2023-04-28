@@ -10,6 +10,7 @@ import 'package:pocket_pay_app/screens/merchant/home/add_bank_screen.dart';
 import 'package:pocket_pay_app/screens/merchant/home/identity_verification_screen.dart';
 import 'package:pocket_pay_app/screens/merchant/home/merchant_add_contact_info_screen.dart';
 import 'package:pocket_pay_app/screens/merchant/home/merchant_create_pin_screen.dart';
+import 'package:pocket_pay_app/screens/merchant/home/verify_phone_number_screen.dart';
 import 'package:pocket_pay_app/utils/sizeconfig.dart';
 import 'package:pocket_pay_app/widgets/export_widget.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,14 @@ class _MerchantCompleteProfileScreenState
         child: Column(
           children: [
             vertical20,
+            todoWidget(
+                completed: userProv.merchantProfileModel.data!.phoneVerified!,
+                onpressed: () {
+                  Get.to(VerifyPhoneNumberScreen());
+                },
+                title: "Verify Phone number",
+                subtitle: "Provide the 4 digit code sent to your number"),
+            vertical10,
             todoWidget(
                 completed: userProv.merchantProfileModel.data!.setPin!,
                 onpressed: () {

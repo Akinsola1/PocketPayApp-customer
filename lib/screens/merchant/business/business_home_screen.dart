@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +7,7 @@ import 'package:pocket_pay_app/api/models/merchant/merchant_business_model.dart'
 import 'package:pocket_pay_app/api/repositories/merchant_repository.dart';
 import 'package:pocket_pay_app/api/responsiveState/responsive_state.dart';
 import 'package:pocket_pay_app/constant/export_constant.dart';
+import 'package:pocket_pay_app/screens/merchant/business/business_analytics_screen.dart';
 import 'package:pocket_pay_app/screens/merchant/business/merchant_generate_qr_code_screen.dart';
 import 'package:pocket_pay_app/screens/merchant/business/merchant_scan_to_pay_screen.dart';
 import 'package:pocket_pay_app/utils/sizeconfig.dart';
@@ -17,7 +17,6 @@ import 'package:unicons/unicons.dart';
 
 import '../../../utils/utils.dart';
 import '../../../widgets/custom_imaga.dart';
-import '../../customer/main/home_screen.dart';
 
 class BusinessScreen extends StatefulWidget {
   final Datum data;
@@ -116,7 +115,9 @@ class _BusinessScreenState extends State<BusinessScreen> {
                 businessAction(
                   title: "History",
                   icon: UniconsLine.history,
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(BusinessAnalytics());
+                  },
                 ),
                 vertical20,
                 Row(
@@ -133,106 +134,113 @@ class _BusinessScreenState extends State<BusinessScreen> {
                   ],
                 ),
                 vertical20,
-                ResponsiveState(
-                    state: userProv.state,
-                    busyWidget: Center(
-                      child: CircularProgressIndicator(color: appPrimaryColor),
-                    ),
-                    idleWidget: userProv.businessQrCodeHistory.data!.isEmpty
-                        ? Column(
-                            children: [
-                              vertical30,
-                              Center(
-                                child: Text(
-                                  "You are yet to perform a transaction. Transactions carried out with QR code will be displayed here.",
-                                  textAlign: TextAlign.center,
-                                  style: txStyle12.copyWith(color: Colors.grey),
-                                ),
-                              ),
-                            ],
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: (userProv
-                                        .businessQrCodeHistory.data!.length <
-                                    5)
-                                ? userProv.businessQrCodeHistory.data!.length
-                                : 5,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              var transaction = userProv
-                                  .businessQrCodeHistory.data?.reversed
-                                  .elementAt(index);
-                              return InkWell(
-                                onTap: () {
-                                  // showModalBottomSheet(
-                                  //     backgroundColor: Colors.white,
-                                  //     isScrollControlled: true,
-                                  //     isDismissible: true,
-                                  //     shape: const RoundedRectangleBorder(
-                                  //       borderRadius: BorderRadius.only(
-                                  //           topLeft: Radius.circular(10),
-                                  //           topRight: Radius.circular(10)),
-                                  //     ),
-                                  //     context: context,
-                                  //     builder: (context) => TransactionDetails(
-                                  //           transaction: userProv
-                                  //               .businessQrCodeHistory.data!
-                                  //               .elementAt(index),
-                                  //         ));
-                                },
-                                child: Column(
-                                  children: [
-                                    ListTile(
-                                      contentPadding: const EdgeInsets.all(0),
-                                      leading: CustomNetworkImage(
-                                          radius: 50,
-                                          imageUrl: transaction?.status ==
-                                                  "Pending"
-                                              ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlHMlGaIm-FgKBskWObPrJh6jkx9vUXEreyw&usqp=CAU"
-                                              : "${transaction?.merchantBusinessLogo}"),
-                                      title: Text(
-                                        transaction?.status == "Pending"
-                                            ? "Qr code not used"
-                                            : transaction?.status == "Expired"
-                                                ? "Qr code expired"
-                                                : "${transaction?.merchantBusinessName}",
-                                        style: txStyle14Bold,
-                                      ),
-                                      subtitle: Text(
-                                        DateFormat.MMMMd().format(
-                                            transaction?.dateCreated ??
-                                                DateTime.now()),
-                                        style: txStyle12,
-                                      ),
-                                      trailing: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            convertStringToCurrency(
-                                                "${transaction?.amount}"),
-                                            style: txStyle14,
-                                          ),
-                                          vertical5,
-                                          Container(
-                                            height: 10,
-                                            width: 10,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Color(transactionStatus(
-                                                    "${transaction?.status}"))),
-                                          )
-                                        ],
-                                      ),
+                userProv.businessQrCodeHistory.data != null
+                    ? ResponsiveState(
+                        state: userProv.state,
+                        busyWidget: Center(
+                          child:
+                              CircularProgressIndicator(color: appPrimaryColor),
+                        ),
+                        idleWidget: userProv.businessQrCodeHistory.data!.isEmpty
+                            ? Column(
+                                children: [
+                                  vertical30,
+                                  Center(
+                                    child: Text(
+                                      "You are yet to perform a transaction. Transactions carried out with QR code will be displayed here.",
+                                      textAlign: TextAlign.center,
+                                      style: txStyle12.copyWith(
+                                          color: Colors.grey),
                                     ),
-                                    Divider(),
-                                  ],
-                                ),
-                              );
-                            }))
+                                  ),
+                                ],
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: (userProv.businessQrCodeHistory.data!
+                                            .length <
+                                        5)
+                                    ? userProv
+                                        .businessQrCodeHistory.data!.length
+                                    : 5,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  var transaction = userProv
+                                      .businessQrCodeHistory.data?.reversed
+                                      .elementAt(index);
+                                  return InkWell(
+                                    onTap: () {
+                                      // showModalBottomSheet(
+                                      //     backgroundColor: Colors.white,
+                                      //     isScrollControlled: true,
+                                      //     isDismissible: true,
+                                      //     shape: const RoundedRectangleBorder(
+                                      //       borderRadius: BorderRadius.only(
+                                      //           topLeft: Radius.circular(10),
+                                      //           topRight: Radius.circular(10)),
+                                      //     ),
+                                      //     context: context,
+                                      //     builder: (context) => TransactionDetails(
+                                      //           transaction: userProv
+                                      //               .businessQrCodeHistory.data!
+                                      //               .elementAt(index),
+                                      //         ));
+                                    },
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                          contentPadding:
+                                              const EdgeInsets.all(0),
+                                          leading: CustomNetworkImage(
+                                              radius: 50,
+                                              imageUrl: transaction?.status ==
+                                                      "Pending"
+                                                  ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlHMlGaIm-FgKBskWObPrJh6jkx9vUXEreyw&usqp=CAU"
+                                                  : "${transaction?.merchantBusinessLogo}"),
+                                          title: Text(
+                                            transaction?.status == "Pending"
+                                                ? "Qr code not used"
+                                                : transaction?.status ==
+                                                        "Expired"
+                                                    ? "Qr code expired"
+                                                    : "${transaction?.merchantBusinessName}",
+                                            style: txStyle14Bold,
+                                          ),
+                                          subtitle: Text(
+                                            DateFormat.MMMMd().format(
+                                                transaction?.dateCreated ??
+                                                    DateTime.now()),
+                                            style: txStyle12,
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                convertStringToCurrency(
+                                                    "${transaction?.amount}"),
+                                                style: txStyle14,
+                                              ),
+                                              vertical5,
+                                              Container(
+                                                height: 10,
+                                                width: 10,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Color(transactionStatus(
+                                                        "${transaction?.status}"))),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(),
+                                      ],
+                                    ),
+                                  );
+                                }))
+                    : SizedBox.shrink()
               ],
             ),
           ),
@@ -281,3 +289,4 @@ class businessAction extends StatelessWidget {
     );
   }
 }
+

@@ -26,8 +26,6 @@ String convertStringToCurrency(String balanceString) {
   return "₦$formattedBalance";
 }
 
-
-
 transactionStatus(String status) {
   switch (status) {
     case "successful":

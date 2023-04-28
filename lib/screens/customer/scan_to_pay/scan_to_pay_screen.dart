@@ -57,21 +57,21 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
         idleWidget: Column(
           children: [
             Expanded(flex: 4, child: _buildQrView(context)),
-            CustomTextField(
-              labelText: "temp",
-              controller: textController,
-            ),
-            vertical10,
-            CustomButton(
-                onTap: () async {
-                  bool u = await userProv.fetchQrCodeData(textController.text);
-                  if (u) {
-                    Get.to(ConfirmTransactionScreen(
-                      tx_ref: textController.text,
-                    ));
-                  }
-                },
-                label: "temp"),
+            // CustomTextField(
+            //   labelText: "temp",
+            //   controller: textController,
+            // ),
+            // vertical10,
+            // CustomButton(
+            //     onTap: () async {
+            //       bool u = await userProv.fetchQrCodeData(textController.text);
+            //       if (u) {
+            //         Get.to(ConfirmTransactionScreen(
+            //           tx_ref: textController.text,
+            //         ));
+            //       }
+            //     },
+            //     label: "temp"),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,6 +108,7 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
                 ),
               ],
             ),
+            vertical20,
           ],
         ),
       ),
@@ -115,7 +116,6 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = SizeConfig.heightOf(30);
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
@@ -144,13 +144,16 @@ class _ScanQrCodeScreenState extends State<ScanQrCodeScreen> {
   void _onQRViewCreated(QRViewController controller) {
     final userProv = Provider.of<UserProvider>(context, listen: false);
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      userProv.fetchQrCodeData(textController.text);
+    controller.scannedDataStream.listen((scanData) async {
       controller.pauseCamera();
-      setState(() {
-        result = scanData;
-        log("data from qr code ${result?.code}");
-      });
+      result = scanData;
+      log("data from qr code ${result?.code}");
+      bool u = await userProv.fetchQrCodeData("${result?.code}");
+      if (u) {
+        Get.off(ConfirmTransactionScreen(
+          tx_ref: "${result?.code}",
+        ));
+      }
     });
   }
 

@@ -48,63 +48,66 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
       appBar: CustomAppBar(
         title: "Fund wallet",
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthOf(5)),
-        child: ListView(
-          children: [
-            vertical20,
-            Center(
-              child: Text(
-                "How much do you want to fund your wallet with",
-                style: txStyle12,
+      body: Form(
+        key: _key,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthOf(5)),
+          child: ListView(
+            children: [
+              vertical20,
+              Center(
+                child: Text(
+                  "How much do you want to fund your wallet with",
+                  style: txStyle12,
+                ),
               ),
-            ),
-            Row(
-              children: [
-                Spacer(),
-                SizedBox(
-                  width: SizeConfig.widthOf(50),
-                  child: TextFormField(
-                    focusNode: myFocusNode,
-                    textAlign: TextAlign.center,
-                    cursorColor: appPrimaryColor,
-                    style: txStyle27Bold,
-                    keyboardType: TextInputType.number,
-                    controller: amountController,
-                    inputFormatters: [ThousandsFormatter()],
-                    // validator: (value) =>
-                    //     userProv.validateAmount(value!),
-
-                    decoration: InputDecoration(
-                      prefixText: "₦",
-                      hintText: '5000',
-                      hintStyle: txStyle27Bold.copyWith(
-                          color: appPrimaryColor.withOpacity(0.2),
-                          fontSize: 30),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
+              Row(
+                children: [
+                  Spacer(),
+                  SizedBox(
+                    width: SizeConfig.widthOf(50),
+                    child: TextFormField(
+                      focusNode: myFocusNode,
+                      textAlign: TextAlign.center,
+                      cursorColor: appPrimaryColor,
+                      style: txStyle27Bold,
+                      keyboardType: TextInputType.number,
+                      controller: amountController,
+                      inputFormatters: [ThousandsFormatter()],
+                      validator: (value) => userProv.validateAmount(value!),
+                      decoration: InputDecoration(
+                        prefixText: "₦",
+                        hintText: '5000',
+                        hintStyle: txStyle27Bold.copyWith(
+                            color: appPrimaryColor.withOpacity(0.2),
+                            fontSize: 30),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
                     ),
                   ),
-                ),
-                Spacer()
-              ],
-            ),
-            vertical50,
-            CustomButtonLoad(
-                onTap: () async {
-                  bool res = await userProv
-                      .fundWallet(amountController.text.replaceAll(",", ""));
-                  if (res) {
-                    // userProv.fetchCustomerProfile();
-                    Get.off(FundingWalletBankTransferScreen());
-                  }
-                },
-                label: "Fund",
-                userProv: userProv.state)
-          ],
+                  Spacer()
+                ],
+              ),
+              vertical50,
+              CustomButtonLoad(
+                  onTap: () async {
+                    if (!_key.currentState!.validate()) return;
+
+                    bool res = await userProv
+                        .fundWallet(amountController.text.replaceAll(",", ""));
+                    if (res) {
+                      // userProv.fetchCustomerProfile();
+                      Get.off(FundingWalletBankTransferScreen());
+                    }
+                  },
+                  label: "Fund",
+                  userProv: userProv.state)
+            ],
+          ),
         ),
       ),
     );

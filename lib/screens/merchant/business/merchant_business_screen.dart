@@ -136,27 +136,40 @@ class _MerchantBusinessScreenState extends State<MerchantBusinessScreen> {
                   style: txStyle14Bold,
                 ),
                 vertical20,
-                SizedBox(
-                  height: 300,
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      //Initialize the spark charts widget
-                      child: Container(
-                          child: SfCircularChart(
-                              legend: Legend(isVisible: true),
-                              series: <CircularSeries>[
-                            // Renders radial bar chart
-                            RadialBarSeries<BusinessData, String>(
-                              dataSource: userProv.businessDataList,
-                              xValueMapper: (BusinessData data, _) =>
-                                  data.business,
-                              yValueMapper: (BusinessData data, _) =>
-                                  data.amount,
-                              dataLabelSettings:
-                                  DataLabelSettings(isVisible: true),
-                            )
-                          ]))),
-                ),
+                userProv.merchantBusinessModel.data!.length > 1
+                    ? SizedBox(
+                        height: 300,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            //Initialize the spark charts widget
+                            child: Container(
+                                child: SfCircularChart(
+                                    legend: Legend(isVisible: true),
+                                    series: <CircularSeries>[
+                                  // Renders radial bar chart
+                                  RadialBarSeries<BusinessData, String>(
+                                    dataSource: userProv.businessDataList,
+                                    xValueMapper: (BusinessData data, _) =>
+                                        data.business,
+                                    yValueMapper: (BusinessData data, _) =>
+                                        data.amount,
+                                    dataLabelSettings:
+                                        DataLabelSettings(isVisible: true),
+                                  )
+                                ]))),
+                      )
+                    : Column(
+                        children: [
+                          Text(
+                            "Business analytics not available!",
+                            style: txStyle14,
+                          ),
+                          Text(
+                            "Click a business to view business analytics",
+                            style: txStyle12.copyWith(color: Colors.grey),
+                          ),
+                        ],
+                      ),
                 Text(
                   "Staff",
                   style: txStyle25Bold.copyWith(color: appPrimaryColor),

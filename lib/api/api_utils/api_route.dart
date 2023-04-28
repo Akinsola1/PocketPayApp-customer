@@ -3,8 +3,8 @@ class apiRoute {
   static const local = "http://localhost:8000";
   static const heroku = "https://pocketpay.herokuapp.com";
 
-  static const base = "$local/customer";
-  static const merchantBase = "$local/merchant";
+  static const base = "$heroku/customer";
+  static const merchantBase = "$heroku/merchant";
 
   //customer
   static const signUp = "$base/register-customer";
@@ -54,13 +54,16 @@ class apiRoute {
 
   static const merchantAddBank = "$merchantBase/add-bank";
 
-  static const tempWithdrawMethod = "$merchantBase/temp-withdraw-method";
+  static const merchantWithdraw = "$merchantBase/merchant-withdrawal";
 
   static const merchantFlwTransactions = "$merchantBase/fetch-flw-transactions";
 
   static const validateMerchantPin = "$merchantBase/validate-merchant-pin";
 
   static const fetchMerchantBank = "$merchantBase/fetch-merchant-bank";
+
+  static const sendOTP = "$merchantBase/sendOtp";
+  static const validateOTP = "$merchantBase/verifyOtp";
 
   //staffs
   static const fetchMerchantStaffs = "$merchantBase/fetch-business-staffs";
