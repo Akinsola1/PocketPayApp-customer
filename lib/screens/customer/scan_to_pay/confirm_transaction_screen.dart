@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pocket_pay_app/api/repositories/merchant_repository.dart';
 import 'package:pocket_pay_app/constant/export_constant.dart';
 import 'package:pocket_pay_app/screens/customer/scan_to_pay/pin_screen.dart';
 import 'package:pocket_pay_app/utils/sizeconfig.dart';
@@ -17,7 +18,7 @@ class ConfirmTransactionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userProv = Provider.of<UserProvider>(context);
+    final userProv = Provider.of<MerchantProvider>(context);
 
     final TextEditingController descriptionController = TextEditingController();
 
@@ -33,14 +34,14 @@ class ConfirmTransactionScreen extends StatelessWidget {
               CustomNetworkImage(
                   radius: 100,
                   imageUrl:
-                      "${userProv.fetchQrcodeDataModel.data?.merchantBusinessLogo}"),
+                      ""),
               vertical10,
               Text(
-                "${userProv.fetchQrcodeDataModel.data?.merchantBusinessName}",
+                "${userProv.merchantFetchQrCodeData.data?.customerName}",
                 style: txStyle16Bold,
               ),
               Text(
-                "Businessemail@gmail.com",
+                "customer@gmail.com",
                 style: txStyle12,
               ),
               vertical50,
@@ -50,7 +51,7 @@ class ConfirmTransactionScreen extends StatelessWidget {
               ),
               Text(
                 convertStringToCurrency(
-                    "${userProv.fetchQrcodeDataModel.data?.amount}"),
+                    "${userProv.merchantFetchQrCodeData.data?.amount}"),
                 style: txStyle27Bold.copyWith(color: appPrimaryColor),
               ),
               vertical20,
@@ -64,7 +65,7 @@ class ConfirmTransactionScreen extends StatelessWidget {
                   onTap: () async {
                     Get.to(PinScreen(
                         tx_ref: tx_ref,
-                        amount: "${userProv.fetchQrcodeDataModel.data?.amount}",
+                        amount: "${userProv.merchantFetchQrCodeData.data?.amount}",
                         description: descriptionController.text));
                   },
                   label: "Proceed")

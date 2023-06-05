@@ -193,6 +193,7 @@ class HomeScreen extends StatelessWidget {
                                     : 5,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
+                              var transaction = userProv.qrCodeTransaction.data?.reversed.elementAt(index);
                               return InkWell(
                                 onTap: () {
                                   showModalBottomSheet(
@@ -207,9 +208,7 @@ class HomeScreen extends StatelessWidget {
                                       context: context,
                                       builder: (context) =>
                                           TransactionDetailsSheet(
-                                            transaction: userProv
-                                                .qrCodeTransaction.data!
-                                                .elementAt(index),
+                                            transaction: transaction!
                                           ));
                                 },
                                 child: Column(
@@ -224,7 +223,7 @@ class HomeScreen extends StatelessWidget {
                                                       .status ==
                                                   "Pending"
                                               ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlHMlGaIm-FgKBskWObPrJh6jkx9vUXEreyw&usqp=CAU"
-                                              : "${userProv.qrCodeTransaction.data?.elementAt(index).merchantBusinessLogo}"),
+                                              : "${transaction?.merchantBusinessLogo}"),
                                       title: Text(
                                         userProv.qrCodeTransaction.data
                                                     ?.elementAt(index)
@@ -236,7 +235,7 @@ class HomeScreen extends StatelessWidget {
                                                         .status ==
                                                     "expired"
                                                 ? "Qr code expired"
-                                                : "${userProv.qrCodeTransaction.data?.elementAt(index).merchantBusinessName}",
+                                                : "${transaction?.merchantBusinessName}",
                                         style: txStyle14Bold,
                                       ),
                                       subtitle: Text(
@@ -255,7 +254,7 @@ class HomeScreen extends StatelessWidget {
                                         children: [
                                           Text(
                                             convertStringToCurrency(
-                                                "${userProv.qrCodeTransaction.data?.elementAt(index).amount}"),
+                                                "${transaction?.amount}"),
                                             style: txStyle14,
                                           ),
                                           vertical5,
@@ -265,7 +264,7 @@ class HomeScreen extends StatelessWidget {
                                             decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: Color(transactionStatus(
-                                                    "${userProv.qrCodeTransaction.data?.elementAt(index).status}"))),
+                                                    "${transaction?.status}"))),
                                           )
                                         ],
                                       ),

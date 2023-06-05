@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.17.0
   local_auth: ^2.1.6
   lottie: ^2.1.0
+  rename: ^2.1.1
   pattern_formatter: ^2.0.0
   pin_code_text_field: ^1.8.0
   pretty_qr_code: ^2.0.3

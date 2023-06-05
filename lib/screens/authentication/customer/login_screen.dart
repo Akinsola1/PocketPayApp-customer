@@ -60,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   labelText: "Phone number",
                   hintText: "+234*********",
                   controller: _phoneController,
+                  textInputType: TextInputType.number,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) => authProv.validatePhoneNumber(value!),
                 ),

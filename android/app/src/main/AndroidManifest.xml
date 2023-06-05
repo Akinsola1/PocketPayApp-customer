@@ -6,7 +6,7 @@
 
 
    <application
-        android:label="pocket_pay_app"
+        android:label="PocketPay"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

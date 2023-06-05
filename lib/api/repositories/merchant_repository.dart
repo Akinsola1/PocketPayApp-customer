@@ -460,6 +460,29 @@ class MerchantProvider extends BaseNotifier with Validators {
     }
   }
 
+
+  Future<bool> fetchQrCodeDataStaff(String tx_ref) async {
+    log("${tx_ref}");
+    setState(ViewState.Busy);
+    try {
+      Map val = {
+        "tx_ref": tx_ref,
+      };
+      var responsebody = await API().post(apiRoute.merchantFetchQrCodeData,
+          await headerWithToken1(), jsonEncode(val));
+      merchantFetchQrCodeData =
+          merchantFetchQRcodeDataModelFromJson(responsebody);
+      log("fetch qr code data || $responsebody");
+      setState(ViewState.Idle);
+      return true;
+    } catch (e) {
+      displayError(title: "Error", message: e.toString());
+      print(e);
+      setState(ViewState.Idle);
+      return false;
+    }
+  }
+
   Future<bool> completeScanQrCode(String tx_ref, String businessId) async {
     setState(ViewState.Busy);
     try {

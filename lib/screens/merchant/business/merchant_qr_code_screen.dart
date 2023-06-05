@@ -35,7 +35,7 @@ class MerchantQrCodeScreen extends StatefulWidget {
 
 class _MerchantQrCodeScreenState extends State<MerchantQrCodeScreen> {
   CountdownTimerController? controller;
-  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 10;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 180;
   bool hasExpired = false;
 
   @override
@@ -138,6 +138,8 @@ class _MerchantQrCodeScreenState extends State<MerchantQrCodeScreen> {
               Spacer(),
               CustomButton(
                   onTap: () {
+                    userProv.fetchMerchantQrCodeTransaction();
+                    userProv.fetchMerchantProfile();
                     Get.offAll(MerchantBottomNav());
                   },
                   label: "Done"),

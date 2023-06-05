@@ -33,7 +33,7 @@ class StaffQrCodeScreen extends StatefulWidget {
 
 class _StaffQrCodeScreenState extends State<StaffQrCodeScreen> {
   CountdownTimerController? controller;
-  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 10;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 180;
   bool hasExpired = false;
 
   @override
@@ -146,6 +146,8 @@ class _StaffQrCodeScreenState extends State<StaffQrCodeScreen> {
               Spacer(),
               CustomButton(
                   onTap: () {
+                    userProv.fetchStaffQrCodeHistory();
+                    userProv.fetchStaffProfile();
                     Get.offAll(StaffHomeScreen());
                   },
                   label: "Done"),

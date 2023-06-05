@@ -41,6 +41,8 @@ class _WalletHistoryState extends State<WalletHistory> {
                 : 5,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
+              var transaction = userProv.flwTransactionModel.data!.reversed
+                                .elementAt(index);
               return InkWell(
                 onTap: () {
                   showModalBottomSheet(
@@ -54,8 +56,7 @@ class _WalletHistoryState extends State<WalletHistory> {
                       ),
                       context: context,
                       builder: (context) => TransactionDetails(
-                            transaction: userProv.flwTransactionModel.data!
-                                .elementAt(index),
+                            transaction:transaction ,
                           ));
                 },
                 child: Column(
@@ -76,7 +77,7 @@ class _WalletHistoryState extends State<WalletHistory> {
                         ),
                       ),
                       title: Text(
-                        "${userProv.flwTransactionModel.data?.elementAt(index).paymentMethod}",
+                        "${transaction.paymentMethod}",
                         style: txStyle14Bold,
                       ),
                       subtitle: Row(
@@ -90,7 +91,7 @@ class _WalletHistoryState extends State<WalletHistory> {
                             style: txStyle12,
                           ),
                           Text(
-                            " • ${userProv.flwTransactionModel.data?.elementAt(index).status}",
+                            " • ${transaction.status}",
                             style: txStyle12,
                           )
                         ],
@@ -101,7 +102,7 @@ class _WalletHistoryState extends State<WalletHistory> {
                         children: [
                           Text(
                             convertStringToCurrency(
-                                "${userProv.flwTransactionModel.data?.elementAt(index).amount}"),
+                                "${transaction.amount}"),
                             style: txStyle14,
                           ),
                           vertical5,
@@ -111,7 +112,7 @@ class _WalletHistoryState extends State<WalletHistory> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color(transactionStatus(
-                                    "${userProv.flwTransactionModel.data?.elementAt(index).status}"))),
+                                    "${transaction.status}"))),
                           )
                         ],
                       ),

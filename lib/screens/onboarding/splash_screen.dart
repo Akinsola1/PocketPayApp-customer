@@ -54,17 +54,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appPrimaryColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(
-            child: Text(
-              "POCKET-PAY",
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Spacer(),
+            Text(
+              "PocketPay",
               style: txStyle27Boldwt,
             ),
-          )
-        ],
+            vertical5,
+            Text(
+                "Future of payment",
+                style: txStyle14wt,
+              ),
+            Spacer(),
+            Text(
+              "By Akinsola Faruq Akindoyin",
+              style: txStyle12wt,
+            ),
+            vertical20,
+          ],
+        ),
       ),
     );
   }
