@@ -1,115 +1,115 @@
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
-var txStyle10 =  GoogleFonts.roboto(fontSize: 10, color: Colors.black, );
+var txStyle10 =  TextStyle( fontFamily: "inter", fontSize: 10, color: Colors.black, );
 
-var txStyle10Bold =  GoogleFonts.roboto(
+var txStyle10Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle11 =  GoogleFonts.roboto(fontSize: 11, color: Colors.black);
+var txStyle11 =  TextStyle( fontFamily: "inter", fontSize: 11, color: Colors.black);
 
-var txStyle11Bold =  GoogleFonts.roboto(
+var txStyle11Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle12 =  GoogleFonts.roboto(fontSize: 12, color: Colors.black);
+var txStyle12 =  TextStyle( fontFamily: "inter", fontSize: 12, color: Colors.black);
 
-var txStyle12Bold =  GoogleFonts.roboto(
+var txStyle12Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle13 =  GoogleFonts.roboto(fontSize: 13, color: Colors.black);
+var txStyle13 =  TextStyle( fontFamily: "inter", fontSize: 13, color: Colors.black);
 
-var txStyle13Bold =  GoogleFonts.roboto(
+var txStyle13Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle14 =  GoogleFonts.roboto(fontSize: 14, color: Colors.black);
+var txStyle14 =  TextStyle( fontFamily: "inter", fontSize: 14, color: Colors.black);
 
-var txStyle14Bold =  GoogleFonts.roboto(
+var txStyle14Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle15 =  GoogleFonts.roboto(fontSize: 15, color: Colors.black);
+var txStyle15 =  TextStyle( fontFamily: "inter", fontSize: 15, color: Colors.black);
 
-var txStyle15Bold =  GoogleFonts.roboto(
+var txStyle15Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle16 =  GoogleFonts.roboto(fontSize: 16, color: Colors.black);
+var txStyle16 =  TextStyle( fontFamily: "inter", fontSize: 16, color: Colors.black);
 
-var txStyle16Bold =  GoogleFonts.roboto(
+var txStyle16Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle17 =  GoogleFonts.roboto(fontSize: 17, color: Colors.black);
+var txStyle17 =  TextStyle( fontFamily: "inter", fontSize: 17, color: Colors.black);
 
-var txStyle17Bold =  GoogleFonts.roboto(
+var txStyle17Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle20 =  GoogleFonts.roboto(fontSize: 20, color: Colors.black);
+var txStyle20 =  TextStyle( fontFamily: "inter", fontSize: 20, color: Colors.black);
 
-var txStyle20Bold =  GoogleFonts.roboto(
+var txStyle20Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle25 =  GoogleFonts.roboto(fontSize: 25, color: Colors.black);
+var txStyle25 =  TextStyle( fontFamily: "inter", fontSize: 25, color: Colors.black);
 
-var txStyle25Bold =  GoogleFonts.roboto(
+var txStyle25Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black);
 
-var txStyle27 =  GoogleFonts.roboto(fontSize: 27, color: Colors.black);
+var txStyle27 =  TextStyle( fontFamily: "inter", fontSize: 27, color: Colors.black);
 
-var txStyle27Bold =  GoogleFonts.roboto(
+var txStyle27Bold =  TextStyle( fontFamily: "inter", 
     fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black);
 
 //////////////////
 
-var txStyle10wt =  GoogleFonts.roboto(fontSize: 10, color: Colors.white);
+var txStyle10wt =  TextStyle( fontFamily: "inter", fontSize: 10, color: Colors.white);
 
-var txStyle10Boldwt =  GoogleFonts.roboto(
+var txStyle10Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle11wt =  GoogleFonts.roboto(fontSize: 11, color: Colors.white);
+var txStyle11wt =  TextStyle( fontFamily: "inter", fontSize: 11, color: Colors.white);
 
-var txStyle11Boldwt =  GoogleFonts.roboto(
+var txStyle11Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle12wt =  GoogleFonts.roboto(fontSize: 12, color: Colors.white);
+var txStyle12wt =  TextStyle( fontFamily: "inter", fontSize: 12, color: Colors.white);
 
-var txStyle12Boldwt =  GoogleFonts.roboto(
+var txStyle12Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle13wt =  GoogleFonts.roboto(fontSize: 13, color: Colors.white);
+var txStyle13wt =  TextStyle( fontFamily: "inter", fontSize: 13, color: Colors.white);
 
-var txStyle13Boldwt =  GoogleFonts.roboto(
+var txStyle13Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle14wt =  GoogleFonts.roboto(fontSize: 14, color: Colors.white);
+var txStyle14wt =  TextStyle( fontFamily: "inter", fontSize: 14, color: Colors.white);
 
-var txStyle14Boldwt =  GoogleFonts.roboto(
+var txStyle14Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle15wt =  GoogleFonts.roboto(fontSize: 15, color: Colors.white);
+var txStyle15wt =  TextStyle( fontFamily: "inter", fontSize: 15, color: Colors.white);
 
-var txStyle15Boldwt =  GoogleFonts.roboto(
+var txStyle15Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle16wt =  GoogleFonts.roboto(fontSize: 16, color: Colors.white);
+var txStyle16wt =  TextStyle( fontFamily: "inter", fontSize: 16, color: Colors.white);
 
-var txStyle16Boldwt =  GoogleFonts.roboto(
+var txStyle16Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle17wt =  GoogleFonts.roboto(fontSize: 17, color: Colors.white);
+var txStyle17wt =  TextStyle( fontFamily: "inter", fontSize: 17, color: Colors.white);
 
-var txStyle17Boldwt =  GoogleFonts.roboto(
+var txStyle17Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle20wt =  GoogleFonts.roboto(fontSize: 20, color: Colors.white);
+var txStyle20wt =  TextStyle( fontFamily: "inter", fontSize: 20, color: Colors.white);
 
-var txStyle20Boldwt =  GoogleFonts.roboto(
+var txStyle20Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle25wt =  GoogleFonts.roboto(fontSize: 25, color: Colors.white);
+var txStyle25wt =  TextStyle( fontFamily: "inter", fontSize: 25, color: Colors.white);
 
-var txStyle25Boldwt =  GoogleFonts.roboto(
+var txStyle25Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
 
-var txStyle27wt =  GoogleFonts.roboto(fontSize: 27, color: Colors.white);
+var txStyle27wt =  TextStyle( fontFamily: "inter", fontSize: 27, color: Colors.white);
 
-var txStyle27Boldwt =  GoogleFonts.roboto(
+var txStyle27Boldwt =  TextStyle( fontFamily: "inter", 
     fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white);

@@ -3,8 +3,8 @@ class apiRoute {
   static const local = "http://localhost:8000";
   static const heroku = "https://pocketpay.herokuapp.com";
 
-  static const base = "$heroku/customer";
-  static const merchantBase = "$heroku/merchant";
+  static const base = "$local/customer";
+  static const merchantBase = "$local/merchant";
 
   //customer
   static const signUp = "$base/register-customer";

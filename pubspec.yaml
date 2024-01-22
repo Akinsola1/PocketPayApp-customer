@@ -42,7 +42,7 @@ dependencies:
   flutter_switch: ^0.3.2
   fluttertoast: ^8.2.1
   get: ^4.6.5
-  google_fonts: ^3.0.1
+  # google_fonts: ^3.0.1
   http: ^0.13.5
   intl: ^0.17.0
   local_auth: ^2.1.6
